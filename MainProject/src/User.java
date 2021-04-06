@@ -33,6 +33,7 @@ public class User extends Account{
 	//other methods
 	public String getHistory() {
 		//returns all movies watched in readable String format
+		return"";
 	}
 	public void buyTicket(Ticket ticket) {
 		//updates currentTix list once user buys Ticket
@@ -40,10 +41,12 @@ public class User extends Account{
 	
 	public String viewTickets(){
 		//returns currentTix in readable string format
+		return"";
 	}
 	
 	public String browseMovies() {
 		//returns list of available movies from Theater class in readable string format
+		return"";
 	}
 
 }
