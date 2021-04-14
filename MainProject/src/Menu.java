@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -11,16 +13,15 @@ public class Menu {
 		System.out.println("read all users");
 	}
 	
-	public static void main(String [] args) throws FileNotFoundException {
+	public static void main(String [] args) throws IOException {
 		populateUsers();
-		PrintWriter out = new PrintWriter (new File("MainProject/src/Users.txt"));
-		out.println("Edited.");
-		out.close();
+		
 		System.out.println("Welcome to the Movie Booking Program.");
 		boolean keepGoing = true;
 		Scanner sysSc = new Scanner (System.in);
 		while (keepGoing) {
-		
+			FileWriter out = new FileWriter (new File("MainProject/src/Users.txt"), true);
+			out.write("new stuff" + "\n");
 		System.out.print("Please specify which type of account you are: \n"
 				+ "\t (1) User \n"
 				+ "\t (2) Admin    ");
@@ -34,9 +35,17 @@ public class Menu {
 					+ "\t(2) No, I would like to make an account.");
 			int userAcctChoice = sysSc.nextInt();
 			if (userAcctChoice == 1) {
-				
+				System.out.print("Enter your username: ");
+				String userUsername = sysSc.next();
+				System.out.println("Enter your password: ");
+				String userPass = sysSc.next();
 			}
 			if (userAcctChoice == 2) {
+				System.out.print("Enter your new username: ");
+				String newUsername = sysSc.next();
+				System.out.print("Enter your new password: ");
+				String newPass = sysSc.next();
+				out.write(newUsername + "   " + newPass + "\n");
 				
 			}
 			else {
@@ -79,6 +88,7 @@ public class Menu {
 				}
 			}
 		}
+		out.close();
 	}
 	}
 }
