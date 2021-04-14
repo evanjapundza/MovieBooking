@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Menu {
@@ -8,8 +11,11 @@ public class Menu {
 		System.out.println("read all users");
 	}
 	
-	public static void main(String [] args) {
+	public static void main(String [] args) throws FileNotFoundException {
 		populateUsers();
+		PrintWriter out = new PrintWriter (new File("MainProject/src/Users.txt"));
+		out.println("Edited.");
+		out.close();
 		System.out.println("Welcome to the Movie Booking Program.");
 		boolean keepGoing = true;
 		Scanner sysSc = new Scanner (System.in);
@@ -34,7 +40,6 @@ public class Menu {
 				
 			}
 			else {
-				//TODO make loop back to command choice
 				System.out.println("Please enter a valid command. \n");
 			}
 			}
