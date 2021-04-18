@@ -1,4 +1,4 @@
-public class Date {
+public class Date implements Comparable<Object>{
 
 	// instance variables
 	private int year; //year of date
@@ -9,6 +9,9 @@ public class Date {
 	public Date(int year,int month, int day) {
 		//all-args constructor
 		//initializes instance variables
+		this.year = year;
+		this.month = month;
+		this.day = day;
 	}
 	
 	//getters and setters
@@ -31,7 +34,31 @@ public class Date {
 		this.day = day;
 	}
 
-
+	//other methods
+	public String toString() { //prints date in readable string format
+		String ret = year + "/" + month + "/" + day;
+		return ret;
+	}
+	
+	public int compareTo(Object otherObject) {
+		Date other = (Date) otherObject;
+		if(this.year == other.year && this.month == other.month) { //based on days (if years and month are equal)
+			if(this.day < other.day) {return -1;}
+			if(this.day > other.day) {return 1;}
+			else {return 0;}
+		}
+		if(this.year == other.year) { //based on months (if years are equal)
+			if(this.month < other.month) {return -1;}
+			if(this.month > other.month) {return 1;}
+			else {return 0;}
+		}
+		else { //based on years
+			if(this.year < other.year) {return -1;}
+			if(this.year > other.year) {return 1;}
+			else {return 0;}
+		}
+		
+	}
 	
 	
 }

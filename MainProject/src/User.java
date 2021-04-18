@@ -10,6 +10,8 @@ public class User extends Account{
 	public User(String username, String password) {
 		super(username,password);
 		//initializes instance variables
+		this.pastTix = new ArrayList<>();
+		this.currentTix = new ArrayList<>();
 	}
 	
 	//getters and setters
@@ -33,20 +35,30 @@ public class User extends Account{
 	//other methods
 	public String getHistory() {
 		//returns all movies watched in readable String format
-		return"";
+		String ret = "";
+		for(Ticket t: pastTix) { //prints all movies from pastTix
+			ret += t.getMovie().toString() + "\n";
+		}
+		return ret;
 	}
 	public void buyTicket(Ticket ticket) {
 		//updates currentTix list once user buys Ticket
+		currentTix.add(ticket);
 	}
 	
 	public String viewTickets(){
 		//returns currentTix in readable string format
-		return"";
+		String ret = "";
+		for(Ticket t: currentTix) {
+			ret += t.toString() + "\n";
+		}
+		return ret;
 	}
 	
-	public String browseMovies() {
-		//returns list of available movies from Theater class in readable string format
-		return"";
-	}
+	// **Seems like the showAvailableMovies() method in Theater class already does this**
+//	public String browseMovies() {
+//		//returns list of available movies from Theater class in readable string format
+//		return"";
+//	}
 
 }

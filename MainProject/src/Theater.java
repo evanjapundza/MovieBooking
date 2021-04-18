@@ -7,7 +7,7 @@ public class Theater
 
     public Theater(String address)
     {
-
+    	this.address = address;
     }
 
     //return address of theater
@@ -16,14 +16,19 @@ public class Theater
         return address;
     }
 
-    public void setAddress()
+    public void setAddress(String address)
     {
         //set address of theater
+    	this.address = address;
     }
 
     public void showAvailableMovies()
     {
         //show all movies available to be played
+    	System.out.println("Available Movies: ");
+    	for(Movie m:movies) { //using toString() method to display available movies
+    		System.out.println(m.toString() + "\n");
+    	}
     }
 
 }

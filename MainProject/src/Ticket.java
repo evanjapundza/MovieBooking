@@ -8,6 +8,7 @@ public class Ticket {
     private String showtime;
     private ArrayList<User> viewers;
     private int seatNum;
+    //private Boolean userWatched;
 
 
     public Ticket(String location, Movie movie, Date showdate, String showtime, ArrayList<User> viewers, int seatNum) {
@@ -17,6 +18,7 @@ public class Ticket {
         this.showtime = showtime;
         this.viewers = viewers;
         this.seatNum = seatNum;
+
     }
 
     public String getLocation() {

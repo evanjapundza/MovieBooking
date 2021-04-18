@@ -13,7 +13,13 @@ public class Movie
     //constructor for movie objects
     public Movie(String title, String genre, Date relDate)
     {
-
+    	this.title = title;
+    	this.genre = genre;
+    	this.releaseDate = relDate;
+    	this.cast = new ArrayList<>();
+    	this.ratings = new ArrayList<>();
+    	this.isRunning = true; 
+    	this.description = "";
     }
 
     //generate getters and setters for all instance variables
@@ -70,7 +76,12 @@ public class Movie
     //return the average of the arraylist of ratings to give the average rating
     public double getAverageRating()
     {
-        return 0.0;
+        double ret = 0; //return variable; default value
+        for(double rating: ratings) { //summing numbers in ratings
+        	ret += rating;
+        }
+        ret /= ratings.size(); //dividing by total elements to get average
+        return ret;
     }
 
     //allow the user to add a rating of the movie, must be between 0 and 5, add constraints
@@ -94,6 +105,8 @@ public class Movie
     //override the toString method to return formatted movie strings
     public String toString()
     {
-        return "";
+        String ret = "Movie: " + title + "\nGenre: " + genre + "\nRelease Date: " + releaseDate +
+        		"\nDescription: " + description;
+        return ret;
     }
 }
