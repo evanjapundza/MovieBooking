@@ -190,6 +190,7 @@ public class Menu
 
                             Movie postNewMovie = new Movie(movieTitle, movieGenre, releaseDate);
                             System.out.println(postNewMovie.toString());
+                            theTheater.addMovie(postNewMovie);
                         }
                         //Implement editing details of movie
                         else if (adminFunc==2)
