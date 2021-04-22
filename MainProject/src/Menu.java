@@ -16,6 +16,7 @@ public class Menu
 	private static String currentUser;
 	private static Map<String, String> creds = new HashMap<>();
 	private static File fileName;
+
 	
 	private static void populateUsers()
     {
@@ -39,6 +40,7 @@ public class Menu
 	
 	public static void main(String [] args) throws IOException
     {
+        Theater theTheater = new Theater("100 Main St.");
         populateUsers();
 		System.out.println("Welcome to the Movie Booking Program.");
 		boolean keepGoing = true;
@@ -152,10 +154,23 @@ public class Menu
                                 + "\t(2) Edit details of existing movie \n"
                                 + "\t(3) Sign Out");
                         int adminFunc = sysSc.nextInt();
+                        sysSc.nextLine();
                         //Implement posting new movie
                         if (adminFunc == 1)
                         {
+                           System.out.println("What is the title of the movie you would like to input?");
+                            String movieTitle = sysSc.next();
+                            System.out.println("What is the genre of the movie you would like to input?");
+                            String movieGenre = sysSc.next();
+                            System.out.println("What is the release date of the movie you would like to input? (Enter month, then day, then year)");
+                            int movieMonth = sysSc.nextInt();
+                            int movieDay = sysSc.nextInt();
+                            int movieYear = sysSc.nextInt();
 
+                            Date releaseDate = new Date(movieYear, movieMonth, movieDay);
+
+                            Movie postNewMovie = new Movie(movieTitle, movieGenre, releaseDate);
+                            System.out.println(postNewMovie.toString());
                         }
                         //Implement editing details of movie
                         else if (adminFunc==2)

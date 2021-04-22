@@ -105,8 +105,14 @@ public class Movie
     //override the toString method to return formatted movie strings
     public String toString()
     {
-        String ret = "Movie: " + title + "\nGenre: " + genre + "\nRelease Date: " + releaseDate +
-        		"\nDescription: " + description;
+        String ret;
+        if (description != "") {
+            ret = "Movie: " + title + "\nGenre: " + genre + "\nRelease Date: " + releaseDate +
+                    "\nDescription: " + description;
+        } else {
+            ret = "Movie: " + title + "\nGenre: " + genre + "\nRelease Date: " + releaseDate;
+        }
+
         return ret;
     }
 }
