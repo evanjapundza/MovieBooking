@@ -133,25 +133,18 @@ public class Menu
                     else if(userAction == 5)
                     {
                         //how to delete users from the txt file
-                        File tempFile = new File("myTempFile.txt");
-                        BufferedReader reader = new BufferedReader(new FileReader(fileName));
-                        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-
-
-                        String removeCreds = currentUsername + currentPassword;
-                        String currentLine;
-
-                        while((currentLine = reader.readLine()) != null)
+                        creds.remove(currentUsername);
+                        File tmpFile = new File("MainProject/src/tmpFile.txt");
+                        FileWriter tmpWriter = new FileWriter (tmpFile, true);
+                        for(String userName : creds.keySet())
                         {
-                            String trimmedLine = currentLine.trim();
-                            if(trimmedLine.equals(removeCreds))
-                            {
-                                writer.write(currentLine + System.getProperty("line.separator"));
-                            }
+                            System.out.println(userName + "   " + creds.get(userName));
+                            tmpWriter.write(userName + "   " + creds.get(userName));
                         }
-                        writer.close();
-                        reader.close();
-                        boolean successful = tempFile.renameTo(fileName);
+
+
+
+
                         userMenu = false;
                         keepGoing = false;
                     }
