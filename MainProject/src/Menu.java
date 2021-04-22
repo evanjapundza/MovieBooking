@@ -12,6 +12,7 @@ public class Menu
 	private String adminPass = "password";
 	private static String currentUsername;
 	private static String currentPassword;
+	private static User currentUser;
 	private static Map<String, String> creds = new HashMap<>();
 	private static File fileName;
 
@@ -53,6 +54,15 @@ public class Menu
             e.printStackTrace();
         }
 	}
+	private static void createUserObject(){
+        //creating user object using key and value from map
+        for(String key: creds.keySet()){
+            if(key.equals(currentUsername)) {
+                currentUser = new User(key, creds.get(key));
+                break;
+            }
+        }
+    }
 	
 	public static void main(String [] args) throws IOException
     {
@@ -126,6 +136,7 @@ public class Menu
                 boolean userMenu = true;
                 while(userMenu)
                 {
+                    createUserObject();
                     System.out.print("What would you like to do today? \n"
                             + "\t (1) View my history \n"
                             + "\t (2) Browse movies \n"
@@ -135,7 +146,15 @@ public class Menu
                     int userAction = sysSc.nextInt();
                     if(userAction == 1)
                     {
-
+                        if(currentUser.getPastTix().size()==0){
+                            System.out.println("No history available");
+                        }
+                        else{
+                            System.out.println("Ticket History: \n");
+                            for(Ticket t: currentUser.getPastTix()){
+                                System.out.println(t.toString());
+                            }
+                        }
                     }
                     else if(userAction == 2)
                     {
@@ -167,7 +186,15 @@ public class Menu
                     }
                     else if(userAction == 3)
                     {
-
+                        if(currentUser.getCurrentTix().size()==0){
+                            System.out.println("You have no tickets");
+                        }
+                        else{
+                            System.out.println("Tickets: \n");
+                            for(Ticket t: currentUser.getCurrentTix()){
+                                System.out.println(t.toString());
+                            }
+                        }
                     }
                     else if(userAction == 4)
                     {
