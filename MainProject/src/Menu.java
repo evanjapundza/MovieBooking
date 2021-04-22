@@ -68,7 +68,7 @@ public class Menu
     {
         Theater theTheater = new Theater("100 Main St.");
         populateMovies(theTheater);
-        populateUsers();
+       // populateUsers();
         fileName = new File("MainProject/src/Users.txt");
 		System.out.println("Welcome to the Movie Booking Program.");
 		boolean keepGoing = true;
@@ -136,6 +136,7 @@ public class Menu
                 boolean userMenu = true;
                 while(userMenu)
                 {
+                    //creating user object
                     createUserObject();
                     System.out.print("What would you like to do today? \n"
                             + "\t (1) View my history \n"
