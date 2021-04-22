@@ -7,13 +7,18 @@ public class Theater
 
     public Theater(String address)
     {
-    	this.address = address;
+        this.address = address;
+        this.movies = new ArrayList<>();
     }
 
     //return address of theater
     public String getAddress()
     {
         return address;
+    }
+
+    public void setMovies(ArrayList<Movie> newList){
+        this.movies = newList;
     }
 
     public void setAddress(String address)

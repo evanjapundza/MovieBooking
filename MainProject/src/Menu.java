@@ -1,6 +1,7 @@
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -14,7 +15,24 @@ public class Menu
 	private static Map<String, String> creds = new HashMap<>();
 	private static File fileName;
 
-	
+
+	private static void populateMovies(Theater theater) throws FileNotFoundException{
+        ArrayList<Movie> movieText = new ArrayList<>();
+        File movieData = new File("MainProject/src/movies.txt");
+        Scanner movieSc = new Scanner(movieData);
+        while(movieSc.hasNextLine()){
+            String title = movieSc.next();
+            String genre = movieSc.next();
+            int dateMo = movieSc.nextInt();
+            int dateDay = movieSc.nextInt();
+            int dateYear = movieSc.nextInt();
+            Date movieDate = new Date(dateYear, dateMo, dateDay);
+            Movie newMovie = new Movie(title, genre, movieDate);
+            movieText.add(newMovie);
+        }
+        theater.setMovies(movieText);
+    }
+
 	private static void populateUsers()
     {
         try
