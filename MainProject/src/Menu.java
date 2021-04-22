@@ -22,7 +22,7 @@ public class Menu
         File movieData = new File("MainProject/src/movies.txt");
         Scanner movieSc = new Scanner(movieData);
         while(movieSc.hasNextLine()){
-            String title = movieSc.next();
+            String title = movieSc.nextLine();
             String genre = movieSc.next();
             int dateMo = movieSc.nextInt();
             int dateDay = movieSc.nextInt();
