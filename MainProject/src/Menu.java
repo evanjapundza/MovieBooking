@@ -135,16 +135,14 @@ public class Menu
                         //how to delete users from the txt file
                         creds.remove(currentUsername);
                         File tmpFile = new File("MainProject/src/tmpFile.txt");
-                        FileWriter tmpWriter = new FileWriter (tmpFile, true);
+                        FileWriter tmpWriter = new FileWriter (tmpFile, false);
                         for(String userName : creds.keySet())
                         {
-                            System.out.println(userName + "   " + creds.get(userName));
-                            tmpWriter.write(userName + "   " + creds.get(userName));
+                            tmpWriter.write(userName + "   " + creds.get(userName) + "\n");
                         }
-
-
-
-
+                        fileName.delete();
+                        tmpFile.renameTo(new File("MainProject/src/Users.txt"));
+                        tmpWriter.close();
                         userMenu = false;
                         keepGoing = false;
                     }
