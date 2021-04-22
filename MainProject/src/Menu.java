@@ -29,6 +29,7 @@ public class Menu
             Date movieDate = new Date(dateYear, dateMo, dateDay);
             Movie newMovie = new Movie(title, genre, movieDate);
             movieText.add(newMovie);
+            movieSc.nextLine();
         }
         theater.setMovies(movieText);
     }
@@ -56,6 +57,7 @@ public class Menu
 	public static void main(String [] args) throws IOException
     {
         Theater theTheater = new Theater("100 Main St.");
+        populateMovies(theTheater);
         populateUsers();
         fileName = new File("MainProject/src/Users.txt");
 		System.out.println("Welcome to the Movie Booking Program.");
@@ -137,7 +139,31 @@ public class Menu
                     }
                     else if(userAction == 2)
                     {
-
+                        boolean stayInMovieList = true;
+                        while(stayInMovieList) {
+                            System.out.println();
+                            for (int i = 0; i < theTheater.getMovies().size(); i++){
+                                System.out.println("(" + theTheater.getMovies().get(i).getID() + ") Title: " +
+                                        theTheater.getMovies().get(i).getTitle());
+                            }
+                            System.out.print("\n Enter the corresponding number to the movie you wish to view more of.\n\t" +
+                                    "Or, enter -1 to search for a movie, or -2 to quit:  ");
+                            int browseAction = sysSc.nextInt();
+                            if (browseAction <0){
+                                if (browseAction == -1){
+                                    //SEARCH
+                                    System.out.println("IN SEARCH :)))");
+                                }
+                            }
+                            else{
+                                for (int j = 0; j < theTheater.getMovies().size(); j++){
+                                    if (browseAction == theTheater.getMovies().get(j).getID()){
+                                        System.out.println("\n"+theTheater.getMovies().get(j).toString() + "\n");
+                                    }
+                                }
+                            }
+                            stayInMovieList = false;
+                        }
                     }
                     else if(userAction == 3)
                     {
