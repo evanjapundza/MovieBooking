@@ -53,6 +53,15 @@ public class Menu
             e.printStackTrace();
         }
 	}
+	private static void createUserObject(){
+        //creating user object using key and value from map
+        for(String key: creds.keySet()){
+            if(key.equals(currentUsername)) {
+                currentUser = new User(key, creds.get(key));
+                break;
+            }
+        }
+    }
 	
 	public static void main(String [] args) throws IOException
     {
@@ -125,13 +134,7 @@ public class Menu
                 boolean userMenu = true;
                 while(userMenu)
                 {
-                    //creating user object using key and value from map
-                    for(String key: creds.keySet()){
-                        if(key.equals(currentUsername)) {
-                            currentUser = new User(key, creds.get(key));
-                            break;
-                        }
-                    }
+                    createUserObject();
                     System.out.print("What would you like to do today? \n"
                             + "\t (1) View my history \n"
                             + "\t (2) Browse movies \n"
@@ -154,7 +157,7 @@ public class Menu
                     else if(userAction == 2)
                     {
 
-                    }1
+                    }
                     else if(userAction == 3)
                     {
                         if(currentUser.getCurrentTix().size()==0){
