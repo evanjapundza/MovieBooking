@@ -21,6 +21,10 @@ public class Theater
         this.movies = newList;
     }
 
+    public ArrayList<Movie> getMovies(){
+        return this.movies;
+    }
+
     public void setAddress(String address)
     {
         //set address of theater

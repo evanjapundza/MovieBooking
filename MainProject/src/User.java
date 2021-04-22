@@ -4,7 +4,7 @@ public class User extends Account{
 	
 	//instance variables
 	private ArrayList<Ticket> pastTix; //list of tickets from the past
-	private ArrayList<Ticket> currentTix; //list of available tickets
+	private ArrayList<Ticket> currentTix; //list of available tickets user has
 	
 	//Constructor
 	public User(String username, String password) {

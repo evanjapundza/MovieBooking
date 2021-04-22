@@ -9,6 +9,8 @@ public class Movie
     private String description;
     private ArrayList<Double> ratings;
     private Boolean isRunning;
+    private static int IDstat = -1;
+    private int ID;
 
     //constructor for movie objects
     public Movie(String title, String genre, Date relDate)
@@ -20,6 +22,13 @@ public class Movie
     	this.ratings = new ArrayList<>();
     	this.isRunning = true; 
     	this.description = "";
+    	IDstat++;
+    	this.ID = IDstat;
+
+    }
+
+    public int getID(){
+        return this.ID;
     }
 
     //generate getters and setters for all instance variables
@@ -107,10 +116,10 @@ public class Movie
     {
         String ret;
         if (description != "") {
-            ret = "Movie: " + title + "\nGenre: " + genre + "\nRelease Date: " + releaseDate +
-                    "\nDescription: " + description;
+            ret = "Title: " + title + " Genre: " + genre + "Re lease Date: " + releaseDate +
+                    " Description: " + description;
         } else {
-            ret = "Movie: " + title + "\nGenre: " + genre + "\nRelease Date: " + releaseDate;
+            ret = "Movie: " + title + " Genre: " + genre + " Release Date: " + releaseDate;
         }
 
         return ret;
