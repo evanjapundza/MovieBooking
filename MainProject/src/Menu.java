@@ -173,6 +173,34 @@ public class Menu
                                 if (browseAction == -1){
                                     //SEARCH
                                     System.out.println("IN SEARCH :)))");
+                                    int searchOption = 0;
+                                    //TODO make sure to add ratings as a search option when that is finished
+                                    System.out.println("What would you like to search by?" +
+                                            "\n (1) Title" +
+                                            "\n (2) Genre");
+                                    searchOption = sysSc.nextInt();
+                                    sysSc.nextLine();
+                                    if (searchOption == 1) {
+                                        System.out.print("Enter the title you would like to search for: ");
+                                        String userSearchTitle = sysSc.nextLine();
+
+                                        for (int c = 0; c < theTheater.getMovies().size(); c++) {
+                                            if (theTheater.getMovies().get(c).getTitle().equals(userSearchTitle)) {
+                                                System.out.println(theTheater.getMovies().get(c).toString());
+                                            }
+                                        }
+
+                                    }
+                                    else if (searchOption == 2) {
+                                        System.out.print("Enter the title you would like to search for: ");
+                                        String userSearchGenre = sysSc.nextLine();
+
+                                        for (int c = 0; c < theTheater.getMovies().size(); c++) {
+                                            if (theTheater.getMovies().get(c).getGenre().equals(userSearchGenre)) {
+                                                System.out.println(theTheater.getMovies().get(c).toString());
+                                            }
+                                        }
+                                    }
                                 }
                             }
                             else{
@@ -254,8 +282,10 @@ public class Menu
                             Date releaseDate = new Date(movieYear, movieMonth, movieDay);
 
                             Movie postNewMovie = new Movie(movieTitle, movieGenre, releaseDate);
-                            System.out.println(postNewMovie.toString());
+                            //System.out.println(postNewMovie.toString());
                             theTheater.addMovie(postNewMovie);
+
+
                         }
                         //Implement editing details of movie
                         else if (adminFunc==2)
