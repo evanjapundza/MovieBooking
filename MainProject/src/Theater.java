@@ -7,9 +7,7 @@ public class Theater
 
     public Theater(String address)
     {
-
-        this.address = address;
-        movies = new ArrayList<>();
+    	this.address = address;
     }
 
     //return address of theater
@@ -24,7 +22,10 @@ public class Theater
     	this.address = address;
     }
 
-
+    public void addMovie(Movie movie)
+    {
+        movies.add(movie);
+    }
 
     public void showAvailableMovies()
     {

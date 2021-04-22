@@ -1,8 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -13,7 +9,8 @@ public class Menu
 {
 	private String adminUser = "ADMIN1";
 	private String adminPass = "password";
-	private static String currentUser;
+	private static String currentUsername;
+	private static String currentPassword;
 	private static Map<String, String> creds = new HashMap<>();
 	private static File fileName;
 
@@ -42,12 +39,12 @@ public class Menu
     {
         Theater theTheater = new Theater("100 Main St.");
         populateUsers();
+        fileName = new File("MainProject/src/Users.txt");
 		System.out.println("Welcome to the Movie Booking Program.");
 		boolean keepGoing = true;
 		Scanner sysSc = new Scanner (System.in);
 		while (keepGoing)
 		{
-		    fileName = new File("MainProject/src/Users.txt");
 			FileWriter out = new FileWriter (fileName, true);
 		    System.out.print("Please specify which type of account you are: \n"
 				+ "\t (1) User \n"
@@ -70,9 +67,10 @@ public class Menu
                             populateUsers();
                             System.out.print("Enter your username: ");
                             String userUsername = sysSc.next();
-                            currentUser = userUsername;
+                            currentUsername = userUsername;
                             System.out.print("Enter your password: ");
                             String userPass = sysSc.next();
+                            currentPassword = userPass;
                             if (creds.containsKey(userUsername) && creds.containsValue(userPass))
                             {
                                 stayInUser = false;
@@ -90,8 +88,15 @@ public class Menu
                         String newUsername = sysSc.next();
                         System.out.print("Enter your new password: ");
                         String newPass = sysSc.next();
-                        out.write(newUsername + "   " + newPass + "\n");
-                        stayInUser = false;
+                        if(creds.containsKey(newUsername))
+                        {
+                            System.out.println("Error: That username is taken!");
+                        }
+                        else
+                        {
+                            out.write(newUsername + "   " + newPass + "\n");
+                            stayInUser = false;
+                        }
                     }
                     else
                     {
@@ -128,11 +133,25 @@ public class Menu
                     else if(userAction == 5)
                     {
                         //how to delete users from the txt file
-                        creds.remove(currentUser);
-                        for(String userName : creds.keySet())
+                        File tempFile = new File("myTempFile.txt");
+                        BufferedReader reader = new BufferedReader(new FileReader(fileName));
+                        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+
+                        String removeCreds = currentUsername + currentPassword;
+                        String currentLine;
+
+                        while((currentLine = reader.readLine()) != null)
                         {
-                            out.write(userName + " " + creds.get(userName));
+                            String trimmedLine = currentLine.trim();
+                            if(trimmedLine.equals(removeCreds))
+                            {
+                                writer.write(currentLine + System.getProperty("line.separator"));
+                            }
                         }
+                        writer.close();
+                        reader.close();
+                        boolean successful = tempFile.renameTo(fileName);
                         userMenu = false;
                         keepGoing = false;
                     }
