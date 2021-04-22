@@ -22,6 +22,11 @@ public class Theater
     	this.address = address;
     }
 
+    public void addMovie(Movie movie)
+    {
+        movies.add(movie);
+    }
+
     public void showAvailableMovies()
     {
         //show all movies available to be played

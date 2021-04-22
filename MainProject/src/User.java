@@ -8,7 +8,7 @@ public class User extends Account{
 	
 	//Constructor
 	public User(String username, String password) {
-		super(username,password);
+		//super(username,password);
 		//initializes instance variables
 		this.pastTix = new ArrayList<>();
 		this.currentTix = new ArrayList<>();
