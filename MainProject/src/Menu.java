@@ -1,5 +1,7 @@
 import java.io.*;
+import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +15,7 @@ public class Menu
 	private static String currentUsername;
 	private static String currentPassword;
 	private static Map<String, String> creds = new HashMap<>();
-	private static File fileName;
+	//private static File fileName;
 
 
 	private static void populateMovies(Theater theater) throws FileNotFoundException{
@@ -57,13 +59,14 @@ public class Menu
     {
         Theater theTheater = new Theater("100 Main St.");
         populateUsers();
-        fileName = new File("MainProject/src/Users.txt");
+        File userFile = new File("MainProject/src/Users.txt");
+        FileWriter out = new FileWriter (userFile, true);
 		System.out.println("Welcome to the Movie Booking Program.");
 		boolean keepGoing = true;
 		Scanner sysSc = new Scanner (System.in);
 		while (keepGoing)
 		{
-			FileWriter out = new FileWriter (fileName, true);
+			//FileWriter out = new FileWriter (userFile, true);
 		    System.out.print("Please specify which type of account you are: \n"
 				+ "\t (1) User \n"
 				+ "\t (2) Admin    ");
@@ -151,6 +154,8 @@ public class Menu
                     else if(userAction == 5)
                     {
                         //how to delete users from the txt file
+                        out.flush();
+                        out.close();
                         creds.remove(currentUsername);
                         File tmpFile = new File("MainProject/src/tmpFile.txt");
                         FileWriter tmpWriter = new FileWriter (tmpFile, false);
@@ -158,9 +163,21 @@ public class Menu
                         {
                             tmpWriter.write(userName + "   " + creds.get(userName) + "\n");
                         }
-                        fileName.delete();
-                        tmpFile.renameTo(new File("MainProject/src/Users.txt"));
+                        tmpWriter.flush();
                         tmpWriter.close();
+
+                        try {
+                            Files.delete(Path.of("MainProject/src/Users.txt"));
+                        } catch (NoSuchFileException x) {
+                            System.err.format("%s: no such" + " file or directory%n", Path.of("MainProject/src/Users.txt"));
+                        } catch (DirectoryNotEmptyException x) {
+                            System.err.format("%s not empty%n", Path.of("MainProject/src/Users.txt"));
+                        } catch (IOException x) {
+                            // File permission problems are caught here.
+                            System.err.println(x);
+                        }
+
+
                         userMenu = false;
                         keepGoing = false;
                     }
