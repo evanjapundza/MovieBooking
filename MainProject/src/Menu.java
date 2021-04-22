@@ -12,6 +12,7 @@ public class Menu
 	private String adminPass = "password";
 	private static String currentUsername;
 	private static String currentPassword;
+	private static User currentUser;
 	private static Map<String, String> creds = new HashMap<>();
 	private static File fileName;
 
@@ -21,7 +22,7 @@ public class Menu
         File movieData = new File("MainProject/src/movies.txt");
         Scanner movieSc = new Scanner(movieData);
         while(movieSc.hasNextLine()){
-            String title = movieSc.next();
+            String title = movieSc.nextLine();
             String genre = movieSc.next();
             int dateMo = movieSc.nextInt();
             int dateDay = movieSc.nextInt();
@@ -29,6 +30,7 @@ public class Menu
             Date movieDate = new Date(dateYear, dateMo, dateDay);
             Movie newMovie = new Movie(title, genre, movieDate);
             movieText.add(newMovie);
+            movieSc.nextLine();
         }
         theater.setMovies(movieText);
     }
@@ -52,11 +54,21 @@ public class Menu
             e.printStackTrace();
         }
 	}
+	private static void createUserObject(){
+        //creating user object using key and value from map
+        for(String key: creds.keySet()){
+            if(key.equals(currentUsername)) {
+                currentUser = new User(key, creds.get(key));
+                break;
+            }
+        }
+    }
 	
 	public static void main(String [] args) throws IOException
     {
         Theater theTheater = new Theater("100 Main St.");
-        populateUsers();
+        populateMovies(theTheater);
+       // populateUsers();
         fileName = new File("MainProject/src/Users.txt");
 		System.out.println("Welcome to the Movie Booking Program.");
 		boolean keepGoing = true;
@@ -124,6 +136,8 @@ public class Menu
                 boolean userMenu = true;
                 while(userMenu)
                 {
+                    //creating user object
+                    createUserObject();
                     System.out.print("What would you like to do today? \n"
                             + "\t (1) View my history \n"
                             + "\t (2) Browse movies \n"
@@ -133,15 +147,83 @@ public class Menu
                     int userAction = sysSc.nextInt();
                     if(userAction == 1)
                     {
-
+                        if(currentUser.getPastTix().size()==0){
+                            System.out.println("No history available");
+                        }
+                        else{
+                            System.out.println("Ticket History: \n");
+                            for(Ticket t: currentUser.getPastTix()){
+                                System.out.println(t.toString());
+                            }
+                        }
                     }
                     else if(userAction == 2)
                     {
+                        boolean stayInMovieList = true;
+                        while(stayInMovieList) {
+                            System.out.println();
+                            for (int i = 0; i < theTheater.getMovies().size(); i++){
+                                System.out.println("(" + theTheater.getMovies().get(i).getID() + ") Title: " +
+                                        theTheater.getMovies().get(i).getTitle());
+                            }
+                            System.out.print("\n Enter the corresponding number to the movie you wish to view more of.\n\t" +
+                                    "Or, enter -1 to search for a movie, or -2 to quit:  ");
+                            int browseAction = sysSc.nextInt();
+                            if (browseAction <0){
+                                if (browseAction == -1){
+                                    //SEARCH
+                                    System.out.println("IN SEARCH :)))");
+                                    int searchOption = 0;
+                                    //TODO make sure to add ratings as a search option when that is finished
+                                    System.out.println("What would you like to search by?" +
+                                            "\n (1) Title" +
+                                            "\n (2) Genre");
+                                    searchOption = sysSc.nextInt();
+                                    sysSc.nextLine();
+                                    if (searchOption == 1) {
+                                        System.out.print("Enter the title you would like to search for: ");
+                                        String userSearchTitle = sysSc.nextLine();
 
+                                        for (int c = 0; c < theTheater.getMovies().size(); c++) {
+                                            if (theTheater.getMovies().get(c).getTitle().equals(userSearchTitle)) {
+                                                System.out.println(theTheater.getMovies().get(c).toString());
+                                            }
+                                        }
+
+                                    }
+                                    else if (searchOption == 2) {
+                                        System.out.print("Enter the title you would like to search for: ");
+                                        String userSearchGenre = sysSc.nextLine();
+
+                                        for (int c = 0; c < theTheater.getMovies().size(); c++) {
+                                            if (theTheater.getMovies().get(c).getGenre().equals(userSearchGenre)) {
+                                                System.out.println(theTheater.getMovies().get(c).toString());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else{
+                                for (int j = 0; j < theTheater.getMovies().size(); j++){
+                                    if (browseAction == theTheater.getMovies().get(j).getID()){
+                                        System.out.println("\n"+theTheater.getMovies().get(j).toString() + "\n");
+                                    }
+                                }
+                            }
+                            stayInMovieList = false;
+                        }
                     }
                     else if(userAction == 3)
                     {
-
+                        if(currentUser.getCurrentTix().size()==0){
+                            System.out.println("You have no tickets");
+                        }
+                        else{
+                            System.out.println("Tickets: \n");
+                            for(Ticket t: currentUser.getCurrentTix()){
+                                System.out.println(t.toString());
+                            }
+                        }
                     }
                     else if(userAction == 4)
                     {
@@ -200,8 +282,10 @@ public class Menu
                             Date releaseDate = new Date(movieYear, movieMonth, movieDay);
 
                             Movie postNewMovie = new Movie(movieTitle, movieGenre, releaseDate);
-                            System.out.println(postNewMovie.toString());
+                            //System.out.println(postNewMovie.toString());
                             theTheater.addMovie(postNewMovie);
+
+
                         }
                         //Implement editing details of movie
                         else if (adminFunc==2)
