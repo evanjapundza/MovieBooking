@@ -37,7 +37,7 @@ public class Menu
     }
 
 	private static void createUserObject(){
-        //creating user object using key and value from map
+        //creating user object
         currentUser = new User(currentUsername,currentPassword);
     }
 	
