@@ -38,12 +38,7 @@ public class Menu
 
 	private static void createUserObject(){
         //creating user object using key and value from map
-        for(String key: creds.keySet()){
-            if(key.equals(currentUsername)) {
-                currentUser = new User(key, creds.get(key));
-                break;
-            }
-        }
+        currentUser = new User(currentUsername,currentPassword);
     }
 	
 	public static void main(String [] args) throws IOException, FileAlreadyExistsException {
@@ -80,6 +75,7 @@ public class Menu
                             currentPassword = userPass;
                             File toDeleteFile = new File("MainProject/UserFolder/" + userUsername + userPass + ".txt");
                             fileName = toDeleteFile;
+
                             if(fileName.exists())
                             {
                                 stayInUser = false;
