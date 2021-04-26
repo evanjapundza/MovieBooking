@@ -9,16 +9,16 @@ import java.util.Scanner;
 
 public class Menu
 {
-	private String adminUser = "ADMIN1";
-	private String adminPass = "password";
-	private static String currentUsername;
-	private static String currentPassword;
-	private static User currentUser;
-	private static Map<String, String> creds = new HashMap<>();
-	private static File fileName;
+    private String adminUser = "ADMIN1";
+    private String adminPass = "password";
+    private static String currentUsername;
+    private static String currentPassword;
+    private static User currentUser;
+    private static Map<String, String> creds = new HashMap<>();
+    private static File fileName;
 
 
-	private static void populateMovies(Theater theater) throws FileNotFoundException{
+    private static void populateMovies(Theater theater) throws FileNotFoundException{
         ArrayList<Movie> movieText = new ArrayList<>();
         File movieData = new File("MainProject/src/movies.txt");
         Scanner movieSc = new Scanner(movieData);
@@ -36,7 +36,7 @@ public class Menu
         theater.setMovies(movieText);
     }
 
-	private static void createUserObject(){
+    private static void createUserObject(){
         //creating user object using key and value from map
         for(String key: creds.keySet()){
             if(key.equals(currentUsername)) {
@@ -45,18 +45,18 @@ public class Menu
             }
         }
     }
-	
-	public static void main(String [] args) throws IOException, FileAlreadyExistsException {
+
+    public static void main(String [] args) throws IOException, FileAlreadyExistsException {
         Theater theTheater = new Theater("100 Main St.");
         populateMovies(theTheater);
-		System.out.println("Welcome to the Movie Booking Program.");
-		boolean keepGoing = true;
-		Scanner sysSc = new Scanner (System.in);
-		while (keepGoing)
-		{
-		    System.out.print("Please specify which type of account you are: \n"
-				+ "\t (1) User \n"
-				+ "\t (2) Admin    ");
+        System.out.println("Welcome to the Movie Booking Program.");
+        boolean keepGoing = true;
+        Scanner sysSc = new Scanner (System.in);
+        while (keepGoing)
+        {
+            System.out.print("Please specify which type of account you are: \n"
+                    + "\t (1) User \n"
+                    + "\t (2) Admin    ");
             int userType = sysSc.nextInt();
             if (userType ==1)
             {
@@ -231,7 +231,7 @@ public class Menu
                     String enteredUsername = sysSc.next();
                     System.out.print("PASSWORD: ");
                     String enteredPass = sysSc.next();
-                    if (enteredUsername.equals("ADMIN1") && enteredPass.equals("password"))
+                    if (enteredUsername.equals("a") && enteredPass.equals("p"))
                     {
                         System.out.println("Select Command you wish to perform: \n"
                                 + "\t(1) Post new movie \n"
@@ -250,16 +250,24 @@ public class Menu
                             int movieMonth = sysSc.nextInt();
                             int movieDay = sysSc.nextInt();
                             int movieYear = sysSc.nextInt();
-
-                            Date releaseDate = new Date(movieYear, movieMonth, movieDay);
-
-                            Movie postNewMovie = new Movie(movieTitle, movieGenre, releaseDate);
-                            //System.out.println(postNewMovie.toString());
-                            theTheater.addMovie(postNewMovie);
+                            FileWriter movieWrite = new FileWriter(new File("MainProject/src/movies.txt"));
+                            movieWrite.write(movieTitle + "\n" + movieGenre + " " + movieMonth + " " + movieDay + " " + movieDay + "\n");
+                            movieWrite.close();
+                            populateMovies(theTheater);
                         }
                         //Implement editing details of movie
                         else if (adminFunc==2)
                         {
+                            Scanner movieEditSc = new Scanner(System.in);
+                            System.out.println("Select a movie to modify the details of: ");
+                            for (int i = 0; i < theTheater.getMovies().size(); i++){
+                                System.out.println("(" + i + ") " + theTheater.getMovies().get(i).getTitle());
+                            }
+                            int movieEditDecision = movieEditSc.nextInt();
+                            String editTitle = theTheater.getMovies().get(movieEditDecision).getTitle();
+                            FileWriter movieEditor = new FileWriter(new File("MainProject/src/movies.txt"), false);
+                            movieEditor.write("AAAAAAA");
+                            movieEditor.close();
 
                         }
                         else if (adminFunc == 3)
@@ -279,7 +287,7 @@ public class Menu
                         System.out.println("Error: Incorrect Admin username or password.");
                     }
                 }
-		    }
-	    }
-	}
+            }
+        }
+    }
 }
