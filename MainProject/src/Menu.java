@@ -2,10 +2,7 @@ import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Menu
 {
@@ -16,6 +13,7 @@ public class Menu
 	private static User currentUser;
 	private static Map<String, String> creds = new HashMap<>();
 	private static File fileName;
+	private static FileWriter fileWriter;
 
 
 	private static void populateMovies(Theater theater) throws FileNotFoundException{
@@ -38,12 +36,7 @@ public class Menu
 
 	private static void createUserObject(){
         //creating user object using key and value from map
-        for(String key: creds.keySet()){
-            if(key.equals(currentUsername)) {
-                currentUser = new User(key, creds.get(key));
-                break;
-            }
-        }
+        currentUser = new User(currentUsername, currentPassword);
     }
 	
 	public static void main(String [] args) throws IOException, FileAlreadyExistsException {
@@ -82,6 +75,7 @@ public class Menu
                             fileName = toDeleteFile;
                             if(fileName.exists())
                             {
+                                createUserObject();
                                 stayInUser = false;
                                 loggingIn = false;
                             }
@@ -100,6 +94,7 @@ public class Menu
                         File userFile = new File("MainProject/UserFolder/" + newUsername + newPass + ".txt");
                         FileWriter userWriter = new FileWriter(userFile, true);
                         fileName = userFile;
+                        //fileWriter = userWriter;
                         if(creds.containsKey(newUsername))
                         {
                             System.out.println("Error: That username is taken!");
@@ -120,7 +115,7 @@ public class Menu
                 while(userMenu)
                 {
                     //creating user object
-                    createUserObject();
+                   // createUserObject();
                     System.out.print("What would you like to do today? \n"
                             + "\t (1) View my history \n"
                             + "\t (2) Browse movies \n"
@@ -135,7 +130,8 @@ public class Menu
                         }
                         else{
                             System.out.println("Ticket History: \n");
-                            for(Ticket t: currentUser.getPastTix()){
+                            for(Ticket t: currentUser.getPastTix())
+                            {
                                 System.out.println(t.toString());
                             }
                         }
@@ -150,7 +146,7 @@ public class Menu
                                         theTheater.getMovies().get(i).getTitle());
                             }
                             System.out.print("\n Enter the corresponding number to the movie you wish to view more of.\n\t" +
-                                    "Or, enter -1 to search for a movie, or -2 to quit:  ");
+                                    "Or, enter -1 to search for a movie, -2 to quit, or -3 to purchase a ticket:  ");
                             int browseAction = sysSc.nextInt();
                             if (browseAction <0){
                                 if (browseAction == -1){
@@ -185,7 +181,55 @@ public class Menu
                                         }
                                     }
                                 }
+                                else if(browseAction == -2)
+                                {
+                                    stayInMovieList = false;
+                                }
+                                else if(browseAction == -3)
+                                {
+                                    System.out.println("What movie would you like to purchase a ticket for?");
+                                    for (int i = 0; i < theTheater.getMovies().size(); i++)
+                                    {
+                                        System.out.println("(" + theTheater.getMovies().get(i).getID() + ") Title: " +
+                                                theTheater.getMovies().get(i).getTitle());
+                                    }
+                                    int movieChoice = sysSc.nextInt();
+                                    for (int j = 0; j < theTheater.getMovies().size(); j++){
+                                        if (movieChoice == theTheater.getMovies().get(j).getID())
+                                        {
+                                            // display a handful of dates / times
+                                            Random rn = new Random();
+                                            System.out.println("Pick a date and time.");
+                                            ArrayList<Date> dates = new ArrayList<>();
+                                            ArrayList<String> times = new ArrayList<>();
+                                            int month = 0;
+                                            int day = 0;
+                                            int year = 0;
+                                            String showTime = "";
+                                            for(int i = 0; i < 5; i++)
+                                            {
+                                                month = (1 + rn.nextInt(13));
+                                                day = (1 + rn.nextInt(30));
+                                                year = 2021;
+                                                Date newDate = new Date(year, month, day);
+                                                showTime = (1 + rn.nextInt(12)) + ":" + (10 + rn.nextInt(60));
+                                                dates.add(newDate);
+                                                times.add(showTime);
+                                                System.out.println("(" + i + ") " + (1 + rn.nextInt(13)) + "/" + (1 + rn.nextInt(30)) + "/" + 2021 + "   " + showTime);
+                                            }
+                                            int dateTimeChoice = sysSc.nextInt();
+                                            Date ticketDate = new Date(year, month, day);
+                                            Ticket newTicket = new Ticket(theTheater.getAddress(), theTheater.getMovies().get(j), dates.get(dateTimeChoice), times.get(dateTimeChoice), 1);
+                                            currentUser.getCurrentTix().add(newTicket);
+                                            FileWriter tmpWriter = new FileWriter(fileName, true);
+                                            tmpWriter.write(newTicket.toString());
+                                            tmpWriter.close();
+                                            System.out.println("Added movie: " + newTicket.toString());
+                                        }
+                                    }
+                                }
                             }
+
                             else{
                                 for (int j = 0; j < theTheater.getMovies().size(); j++){
                                     if (browseAction == theTheater.getMovies().get(j).getID()){
@@ -193,11 +237,12 @@ public class Menu
                                     }
                                 }
                             }
-                            stayInMovieList = false;
+                            //stayInMovieList = false;
                         }
                     }
                     else if(userAction == 3)
                     {
+                        System.out.println(currentUser.getCurrentTix().size());
                         if(currentUser.getCurrentTix().size()==0){
                             System.out.println("You have no tickets");
                         }
@@ -215,6 +260,7 @@ public class Menu
                     }
                     else if(userAction == 5)
                     {
+                        //fileWriter.close();
                         fileName.delete();
                         System.out.println("Deleted account!");
                         userMenu = false;
