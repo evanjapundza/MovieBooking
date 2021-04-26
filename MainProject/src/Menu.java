@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -35,25 +36,6 @@ public class Menu
         theater.setMovies(movieText);
     }
 
-	private static void populateUsers()
-    {
-        try
-        {
-            File userCred = new File("MainProject/src/Users.txt");
-            Scanner in = new Scanner(userCred);
-            while(in.hasNextLine())
-            {
-                String username = in.next();
-                String password = in.next();
-                creds.put(username, password);
-                in.nextLine();
-            }
-        }
-        catch(FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-	}
 	private static void createUserObject(){
         //creating user object using key and value from map
         for(String key: creds.keySet()){
@@ -64,18 +46,14 @@ public class Menu
         }
     }
 	
-	public static void main(String [] args) throws IOException
-    {
+	public static void main(String [] args) throws IOException, FileAlreadyExistsException {
         Theater theTheater = new Theater("100 Main St.");
         populateMovies(theTheater);
-       // populateUsers();
-        fileName = new File("MainProject/src/Users.txt");
 		System.out.println("Welcome to the Movie Booking Program.");
 		boolean keepGoing = true;
 		Scanner sysSc = new Scanner (System.in);
 		while (keepGoing)
 		{
-			FileWriter out = new FileWriter (fileName, true);
 		    System.out.print("Please specify which type of account you are: \n"
 				+ "\t (1) User \n"
 				+ "\t (2) Admin    ");
@@ -94,14 +72,15 @@ public class Menu
                         boolean loggingIn = true;
                         while(loggingIn)
                         {
-                            populateUsers();
                             System.out.print("Enter your username: ");
                             String userUsername = sysSc.next();
                             currentUsername = userUsername;
                             System.out.print("Enter your password: ");
                             String userPass = sysSc.next();
                             currentPassword = userPass;
-                            if (creds.containsKey(userUsername) && creds.containsValue(userPass))
+                            File toDeleteFile = new File("MainProject/UserFolder/" + userUsername + userPass + ".txt");
+                            fileName = toDeleteFile;
+                            if(fileName.exists())
                             {
                                 stayInUser = false;
                                 loggingIn = false;
@@ -118,13 +97,17 @@ public class Menu
                         String newUsername = sysSc.next();
                         System.out.print("Enter your new password: ");
                         String newPass = sysSc.next();
+                        File userFile = new File("MainProject/UserFolder/" + newUsername + newPass + ".txt");
+                        FileWriter userWriter = new FileWriter(userFile, true);
+                        fileName = userFile;
                         if(creds.containsKey(newUsername))
                         {
                             System.out.println("Error: That username is taken!");
                         }
                         else
                         {
-                            out.write(newUsername + "   " + newPass + "\n");
+                            userWriter.write(newUsername + "   " + newPass + "\n");
+                            userWriter.close();
                             stayInUser = false;
                         }
                     }
@@ -232,19 +215,8 @@ public class Menu
                     }
                     else if(userAction == 5)
                     {
-                        //how to delete users from the txt file
-                        creds.remove(currentUsername);
-                        File tmpFile = new File("MainProject/src/tmpFile.txt");
-                        FileWriter tmpWriter = new FileWriter (tmpFile, true);
-                        for(String userName : creds.keySet())
-                        {
-                            System.out.println(userName + "   " + creds.get(userName));
-                            tmpWriter.write(userName + "   " + creds.get(userName));
-                        }
-
-
-
-
+                        fileName.delete();
+                        System.out.println("Deleted account!");
                         userMenu = false;
                         keepGoing = false;
                     }
@@ -270,7 +242,7 @@ public class Menu
                         //Implement posting new movie
                         if (adminFunc == 1)
                         {
-                           System.out.println("What is the title of the movie you would like to input?");
+                            System.out.println("What is the title of the movie you would like to input?");
                             String movieTitle = sysSc.next();
                             System.out.println("What is the genre of the movie you would like to input?");
                             String movieGenre = sysSc.next();
@@ -284,8 +256,6 @@ public class Menu
                             Movie postNewMovie = new Movie(movieTitle, movieGenre, releaseDate);
                             //System.out.println(postNewMovie.toString());
                             theTheater.addMovie(postNewMovie);
-
-
                         }
                         //Implement editing details of movie
                         else if (adminFunc==2)
@@ -310,7 +280,6 @@ public class Menu
                     }
                 }
 		    }
-		out.close();
 	    }
 	}
 }
