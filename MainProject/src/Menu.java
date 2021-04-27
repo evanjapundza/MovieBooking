@@ -37,8 +37,13 @@ public class Menu
     }
 
 	private static void createUserObject(){
-        //creating user object
-        currentUser = new User(currentUsername,currentPassword);
+        //creating user object using key and value from map
+        for(String key: creds.keySet()){
+            if(key.equals(currentUsername)) {
+                currentUser = new User(key, creds.get(key));
+                break;
+            }
+        }
     }
 	
 	public static void main(String [] args) throws IOException, FileAlreadyExistsException {
@@ -75,7 +80,6 @@ public class Menu
                             currentPassword = userPass;
                             File toDeleteFile = new File("MainProject/UserFolder/" + userUsername + userPass + ".txt");
                             fileName = toDeleteFile;
-
                             if(fileName.exists())
                             {
                                 stayInUser = false;
@@ -221,12 +225,14 @@ public class Menu
             else if (userType == 2)
             {
                 boolean stayInAdmin = true;
+                System.out.print("USERNAME: ");
+                String enteredUsername = sysSc.next();
+                System.out.print("PASSWORD: ");
+                String enteredPass = sysSc.next();
+                File movieList = new File("MainProject/src/movieList.txt");
                 while (stayInAdmin)
                 {
-                    System.out.print("USERNAME: ");
-                    String enteredUsername = sysSc.next();
-                    System.out.print("PASSWORD: ");
-                    String enteredPass = sysSc.next();
+
                     if (enteredUsername.equals("ADMIN1") && enteredPass.equals("password"))
                     {
                         System.out.println("Select Command you wish to perform: \n"
@@ -239,7 +245,8 @@ public class Menu
                         if (adminFunc == 1)
                         {
                             System.out.println("What is the title of the movie you would like to input?");
-                            String movieTitle = sysSc.next();
+                            String movieTitle = sysSc.nextLine();
+                            String titleNoSpace = movieTitle.replaceAll("\\s", "");;
                             System.out.println("What is the genre of the movie you would like to input?");
                             String movieGenre = sysSc.next();
                             System.out.println("What is the release date of the movie you would like to input? (Enter month, then day, then year)");
@@ -249,9 +256,14 @@ public class Menu
 
                             Date releaseDate = new Date(movieYear, movieMonth, movieDay);
 
-                            Movie postNewMovie = new Movie(movieTitle, movieGenre, releaseDate);
-                            //System.out.println(postNewMovie.toString());
-                            theTheater.addMovie(postNewMovie);
+
+                            File moviesFile = new File("MainProject/MoviesFolder/" + titleNoSpace + ".txt");
+                            FileWriter movieWriter = new FileWriter(moviesFile, true);
+                            FileWriter movieListWriter = new FileWriter(movieList, true);
+                            movieListWriter.write(titleNoSpace+ ".txt");
+                            movieWriter.write(movieTitle + "\n" + movieGenre +  "\n" + movieMonth + " " + movieDay + " " + movieYear);
+                            movieWriter.close();
+                            movieListWriter.close();
                         }
                         //Implement editing details of movie
                         else if (adminFunc==2)
@@ -264,6 +276,7 @@ public class Menu
                             System.out.println("______________________________________\n");
                             stayInAdmin = false;
                             keepGoing = false;
+                            break;
                         }
                         else
                         {
@@ -273,6 +286,7 @@ public class Menu
                     else
                     {
                         System.out.println("Error: Incorrect Admin username or password.");
+                        stayInAdmin = false;
                     }
                 }
 		    }

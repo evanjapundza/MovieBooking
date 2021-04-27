@@ -11,14 +11,13 @@ public class Ticket {
     //private Boolean userWatched;
 
 
-    public Ticket(String location, Movie movie, Date showdate, String showtime, ArrayList<User> viewers, int seatNum) {
+    public Ticket(String location, Movie movie, Date showdate, String showtime, int seatNum) {
         this.location = location;
         this.movie = movie;
         this.showdate = showdate;
         this.showtime = showtime;
-        this.viewers = viewers;
         this.seatNum = seatNum;
-
+        viewers = new ArrayList<>();
     }
 
     public String getLocation() {
