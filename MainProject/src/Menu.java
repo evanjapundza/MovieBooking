@@ -9,8 +9,8 @@ import java.util.Scanner;
 
 public class Menu
 {
-	private String adminUser = "ADMIN1";
-	private String adminPass = "password";
+	private static final String adminUser = "a";
+	private static final String adminPass = "p";
 	private static String currentUsername;
 	private static String currentPassword;
 	private static User currentUser;
@@ -18,22 +18,51 @@ public class Menu
 	private static File fileName;
 
 
-	private static void populateMovies(Theater theater) throws FileNotFoundException{
-        ArrayList<Movie> movieText = new ArrayList<>();
-        File movieData = new File("MainProject/src/movies.txt");
-        Scanner movieSc = new Scanner(movieData);
-        while(movieSc.hasNextLine()){
+//	private static void populateMovies(Theater theater) throws FileNotFoundException{
+//        ArrayList<Movie> movieText = new ArrayList<>();
+//        File movieData = new File("MainProject/src/movies.txt");
+//        Scanner movieSc = new Scanner(movieData);
+//        while(movieSc.hasNextLine()){
+//            String title = movieSc.nextLine();
+//            String genre = movieSc.next();
+//            int dateMo = movieSc.nextInt();
+//            int dateDay = movieSc.nextInt();
+//            int dateYear = movieSc.nextInt();
+//            Date movieDate = new Date(dateYear, dateMo, dateDay);
+//            Movie newMovie = new Movie(title, genre, movieDate);
+//            movieText.add(newMovie);
+//            movieSc.nextLine();
+//        }
+//        theater.setMovies(movieText);
+//    }
+
+    public static String getAdminUser(){
+        return adminUser;
+    }
+
+    public static String getAdminPass(){
+        return adminPass;
+    }
+
+    private static void populateMovies(Theater theater) throws FileNotFoundException {
+        ArrayList<Movie> movieList = new ArrayList<>();
+        Scanner movieListSc = new Scanner(new File("MainProject/src/movieList.txt"));
+        while (movieListSc.hasNextLine()){
+            String rawTitle = movieListSc.nextLine();
+            String strippedTitle = rawTitle.replaceAll("\\s", "");
+            System.out.println(strippedTitle);
+            Scanner movieSc = new Scanner(new File("MainProject/MoviesFolder/" + strippedTitle));
             String title = movieSc.nextLine();
-            String genre = movieSc.next();
+            String genre = movieSc.nextLine();
             int dateMo = movieSc.nextInt();
             int dateDay = movieSc.nextInt();
             int dateYear = movieSc.nextInt();
             Date movieDate = new Date(dateYear, dateMo, dateDay);
             Movie newMovie = new Movie(title, genre, movieDate);
-            movieText.add(newMovie);
-            movieSc.nextLine();
+            movieList.add(newMovie);
         }
-        theater.setMovies(movieText);
+        theater.setMovies(movieList);
+        System.out.println(movieList);
     }
 
 	private static void createUserObject(){
@@ -233,7 +262,7 @@ public class Menu
                 while (stayInAdmin)
                 {
 
-                    if (enteredUsername.equals("ADMIN1") && enteredPass.equals("password"))
+                    if (enteredUsername.equals(Menu.getAdminUser()) && enteredPass.equals(Menu.getAdminPass()))
                     {
                         System.out.println("Select Command you wish to perform: \n"
                                 + "\t(1) Post new movie \n"
@@ -260,14 +289,31 @@ public class Menu
                             File moviesFile = new File("MainProject/MoviesFolder/" + titleNoSpace + ".txt");
                             FileWriter movieWriter = new FileWriter(moviesFile, true);
                             FileWriter movieListWriter = new FileWriter(movieList, true);
-                            movieListWriter.write(titleNoSpace+ ".txt");
+                            movieListWriter.write(titleNoSpace+ ".txt\n");
                             movieWriter.write(movieTitle + "\n" + movieGenre +  "\n" + movieMonth + " " + movieDay + " " + movieYear);
                             movieWriter.close();
                             movieListWriter.close();
+
                         }
                         //Implement editing details of movie
                         else if (adminFunc==2)
                         {
+                            Scanner sc = new Scanner(System.in);
+                            System.out.print("Enter the exact name of the movie you wish to edit: ");
+                            String rawTitle = sc.nextLine();
+                            String strippedTitle = rawTitle.replaceAll("\\s", "");
+                            FileWriter titleWrite = new FileWriter(new File("MainProject/MoviesFolder/" + strippedTitle + ".txt"), false);
+                            FileWriter detailWrite = new FileWriter(new File("MainProject/MoviesFolder/" + strippedTitle + ".txt"), true);
+                            titleWrite.write(rawTitle);
+                            System.out.print("Enter the new genre of this movie: ");
+                            String genre = sc.nextLine();
+                            System.out.print("Enter the new date of the movie (Month, day, year): ");
+                            int month = sc.nextInt();
+                            int day = sc.nextInt();
+                            int year = sc.nextInt();
+                            detailWrite.write("\n" + genre +"\n" + month + " " + day + " " + year);
+                            titleWrite.close();
+                            detailWrite.close();
 
                         }
                         else if (adminFunc == 3)
