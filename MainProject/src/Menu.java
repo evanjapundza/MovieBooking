@@ -225,13 +225,14 @@ public class Menu
             else if (userType == 2)
             {
                 boolean stayInAdmin = true;
+                System.out.print("USERNAME: ");
+                String enteredUsername = sysSc.next();
+                System.out.print("PASSWORD: ");
+                String enteredPass = sysSc.next();
+                File movieList = new File("MainProject/src/movieList.txt");
                 while (stayInAdmin)
                 {
-                    System.out.print("USERNAME: ");
-                    String enteredUsername = sysSc.next();
-                    System.out.print("PASSWORD: ");
-                    String enteredPass = sysSc.next();
-                    File movieList = new File("MainProject/src/movieList.txt");
+
                     if (enteredUsername.equals("ADMIN1") && enteredPass.equals("password"))
                     {
                         System.out.println("Select Command you wish to perform: \n"
@@ -275,6 +276,7 @@ public class Menu
                             System.out.println("______________________________________\n");
                             stayInAdmin = false;
                             keepGoing = false;
+                            break;
                         }
                         else
                         {
@@ -284,6 +286,7 @@ public class Menu
                     else
                     {
                         System.out.println("Error: Incorrect Admin username or password.");
+                        stayInAdmin = false;
                     }
                 }
 		    }
