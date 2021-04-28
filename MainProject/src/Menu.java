@@ -50,16 +50,18 @@ public class Menu
         while (movieListSc.hasNextLine()){
             String rawTitle = movieListSc.nextLine();
             String strippedTitle = rawTitle.replaceAll("\\s", "");
-            System.out.println(strippedTitle);
-            Scanner movieSc = new Scanner(new File("MainProject/MoviesFolder/" + strippedTitle));
-            String title = movieSc.nextLine();
-            String genre = movieSc.nextLine();
-            int dateMo = movieSc.nextInt();
-            int dateDay = movieSc.nextInt();
-            int dateYear = movieSc.nextInt();
-            Date movieDate = new Date(dateYear, dateMo, dateDay);
-            Movie newMovie = new Movie(title, genre, movieDate);
-            movieList.add(newMovie);
+            File filePath = new File("MainProject/MoviesFolder/" + strippedTitle);
+            if (filePath.exists()){
+                Scanner movieSc = new Scanner(filePath);
+                String title = movieSc.nextLine();
+                String genre = movieSc.nextLine();
+                int dateMo = movieSc.nextInt();
+                int dateDay = movieSc.nextInt();
+                int dateYear = movieSc.nextInt();
+                Date movieDate = new Date(dateYear, dateMo, dateDay);
+                Movie newMovie = new Movie(title, genre, movieDate);
+                movieList.add(newMovie);
+            }
         }
         theater.setMovies(movieList);
         System.out.println(movieList);
@@ -267,7 +269,8 @@ public class Menu
                         System.out.println("Select Command you wish to perform: \n"
                                 + "\t(1) Post new movie \n"
                                 + "\t(2) Edit details of existing movie \n"
-                                + "\t(3) Sign Out");
+                                + "\t(3) Delete Movie \n"
+                                + "\t(4) Sign Out");
                         int adminFunc = sysSc.nextInt();
                         sysSc.nextLine();
                         //Implement posting new movie
@@ -314,9 +317,17 @@ public class Menu
                             detailWrite.write("\n" + genre +"\n" + month + " " + day + " " + year);
                             titleWrite.close();
                             detailWrite.close();
-
                         }
-                        else if (adminFunc == 3)
+                        //TODO DELETE MOVIE FUNCTION NOT DELETING MOVIE??
+                        else if (adminFunc == 3){
+                            Scanner sc = new Scanner(System.in);
+                            String rawTitle = sc.nextLine();
+                            String stripped = rawTitle.replaceAll("\\s", "");
+                            File toDelete = new File("MainProject//MoviesFolder//" + stripped + ".txt");
+                            toDelete.delete();
+                            System.out.println(rawTitle + " Deleted.");
+                        }
+                        else if (adminFunc == 4)
                         {
                             System.out.println("Signing Out.\n");
                             System.out.println("______________________________________\n");
