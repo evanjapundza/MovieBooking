@@ -186,7 +186,6 @@ public class Menu
                             if (browseAction <0){
                                 if (browseAction == -1){
                                     //SEARCH
-                                    System.out.println("IN SEARCH :)))");
                                     int searchOption = 0;
                                     //TODO make sure to add ratings as a search option when that is finished
                                     System.out.println("What would you like to search by?" +
@@ -199,7 +198,7 @@ public class Menu
                                         String userSearchTitle = sysSc.nextLine();
 
                                         for (int c = 0; c < theTheater.getMovies().size(); c++) {
-                                            if (theTheater.getMovies().get(c).getTitle().equals(userSearchTitle)) {
+                                            if (theTheater.getMovies().get(c).getTitle().equals(userSearchTitle) || theTheater.getMovies().get(c).getTitle().toLowerCase().equals(userSearchTitle)) {
                                                 System.out.println(theTheater.getMovies().get(c).toString());
                                             }
                                         }
