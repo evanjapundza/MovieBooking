@@ -97,7 +97,6 @@ public class Menu
     {
         //creating user object using key and value from ma
         currentUser = new User(currentUsername, currentPassword);
-
     }
 	
 	public static void main(String [] args) throws IOException, FileAlreadyExistsException {
@@ -133,12 +132,22 @@ public class Menu
                             String userPass = sysSc.next();
                             currentPassword = userPass;
                             createUserObject();
-                            File toDeleteFile = new File("MainProject/UserFolder/" + userUsername + userPass + ".txt");
+                            File toDeleteFile = new File("MainProject/UserFolder/" + userUsername + ".txt");
                             fileName = toDeleteFile;
                             if(fileName.exists())
                             {
-                                stayInUser = false;
-                                loggingIn = false;
+                                Scanner readCreds = new Scanner(fileName);
+                                readCreds.next();
+                                String password = readCreds.next();
+                                if(currentPassword.equals(password))
+                                {
+                                    stayInUser = false;
+                                    loggingIn = false;
+                                }
+                                else
+                                {
+                                    System.out.println("Error: Invalid username or password");
+                                }
                             }
                             else
                             {
@@ -153,8 +162,7 @@ public class Menu
                         System.out.print("Enter your new password: ");
                         String newPass = sysSc.next();
                         createUserObject();
-                        File userFile = new File("MainProject/UserFolder/" + newUsername + newPass + ".txt");
-                        FileWriter userWriter = new FileWriter(userFile, true);
+                        File userFile = new File("MainProject/UserFolder/" + newUsername + ".txt");
                         fileName = userFile;
                         if(userFile.exists())
                         {
@@ -162,6 +170,7 @@ public class Menu
                         }
                         else
                         {
+                            FileWriter userWriter = new FileWriter(userFile, true);
                             userWriter.write(newUsername + "   " + newPass + "\n");
                             userWriter.close();
                             stayInUser = false;
@@ -319,8 +328,7 @@ public class Menu
                         {
                             System.out.println("You have no tickets");
                         }
-                        else
-                            {
+                        else {
                             System.out.println("Tickets: \n");
                             for(Ticket t: currentUser.getCurrentTix())
                             {
