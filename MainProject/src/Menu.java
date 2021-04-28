@@ -34,6 +34,26 @@ public class Menu
 //        theater.setMovies(movieText);
 //    }
 
+    public static double computeRating(Movie movie) throws FileNotFoundException
+    {
+        String strippedTitle = movie.getTitle().replaceAll("\\s", "");
+        File movieFile = new File("MainProject/MoviesFolder/" + strippedTitle + ".txt");
+        Scanner in = new Scanner(movieFile);
+        int counter = 0;
+        double total = 0;
+        in.nextLine();
+        in.nextLine();
+        in.nextLine();
+        while(in.hasNextDouble())
+        {
+            total += in.nextDouble();
+            counter++;
+        }
+        double result = total/counter;
+        movie.setRating(result);
+        return result;
+    }
+
     public static String getAdminUser(){
         return adminUser;
     }
@@ -58,6 +78,15 @@ public class Menu
                 int dateYear = movieSc.nextInt();
                 Date movieDate = new Date(dateYear, dateMo, dateDay);
                 Movie newMovie = new Movie(title, genre, movieDate);
+                int counter = 0;
+                double total = 0;
+                while(movieSc.hasNextDouble())
+                {
+                    total += movieSc.nextDouble();
+                    counter++;
+                }
+                double result = total/counter;
+                newMovie.setRating(result);
                 movieList.add(newMovie);
             }
         }
@@ -172,7 +201,8 @@ public class Menu
                         }
                         else{
                             System.out.println("Ticket History: \n");
-                            for(Ticket t: currentUser.getPastTix()){
+                            for(Ticket t: currentUser.getPastTix())
+                            {
                                 System.out.println(t.toString());
                             }
                         }
@@ -185,8 +215,16 @@ public class Menu
                             System.out.println();
                             for (int i = 0; i < theTheater.getMovies().size(); i++)
                             {
-                                System.out.println("(" + theTheater.getMovies().get(i).getID() + ") Title: " +
+
+                                //System.out.println(theTheater.getMovies().get(i).getRating());
+                                System.out.print("(" + theTheater.getMovies().get(i).getID() + ") Title: " +
                                         theTheater.getMovies().get(i).getTitle());
+                                if(Double.isNaN(theTheater.getMovies().get(i).getRating())) {
+                                    System.out.print(" | No ratings available");
+                                } else {
+                                    System.out.printf(" | Rating: %.2f out of 5", theTheater.getMovies().get(i).getRating());
+                                }
+                                System.out.println();
                             }
                             System.out.print("\n Enter the corresponding number to the movie you wish to view more of.\n\t" +
                                     "Or, enter -1 to search for a movie, -2 to buy a ticket, or -3 to quit:  ");
@@ -196,12 +234,13 @@ public class Menu
                                 if (browseAction == -1)
                                 {
                                     //SEARCH
-                                    System.out.println("IN SEARCH :)))");
+                                    //System.out.println("IN SEARCH :)))");
                                     int searchOption = 0;
                                     //TODO make sure to add ratings as a search option when that is finished
                                     System.out.println("What would you like to search by?" +
                                             "\n (1) Title" +
-                                            "\n (2) Genre");
+                                            "\n (2) Genre" +
+                                            "\n (3) Ratings");
                                     searchOption = sysSc.nextInt();
                                     sysSc.nextLine();
                                     if (searchOption == 1)
@@ -228,6 +267,18 @@ public class Menu
                                             if (theTheater.getMovies().get(c).getGenre().equals(userSearchGenre))
                                             {
                                                 System.out.println(theTheater.getMovies().get(c).toString());
+                                            }
+                                        }
+                                    }
+                                    else if(searchOption == 3)
+                                    {
+                                        System.out.println("What is your minimum rating?");
+                                        double minRating = sysSc.nextDouble();
+                                        for(int i = 0; i < theTheater.getMovies().size(); i++)
+                                        {
+                                            if(theTheater.getMovies().get(i).getRating() >= minRating)
+                                            {
+                                                System.out.println(theTheater.getMovies().get(i).toString());
                                             }
                                         }
                                     }
