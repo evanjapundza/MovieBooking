@@ -2,10 +2,7 @@ import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Menu
 {
@@ -16,6 +13,7 @@ public class Menu
 	private static User currentUser;
 	private static Map<String, String> creds = new HashMap<>();
 	private static File fileName;
+	private static File movieFileToDelete;
 
 
 //	private static void populateMovies(Theater theater) throws FileNotFoundException{
@@ -67,14 +65,11 @@ public class Menu
         System.out.println(movieList);
     }
 
-	private static void createUserObject(){
-        //creating user object using key and value from map
-        for(String key: creds.keySet()){
-            if(key.equals(currentUsername)) {
-                currentUser = new User(key, creds.get(key));
-                break;
-            }
-        }
+	private static void createUserObject()
+    {
+        //creating user object using key and value from ma
+        currentUser = new User(currentUsername, currentPassword);
+
     }
 	
 	public static void main(String [] args) throws IOException, FileAlreadyExistsException {
@@ -109,6 +104,7 @@ public class Menu
                             System.out.print("Enter your password: ");
                             String userPass = sysSc.next();
                             currentPassword = userPass;
+                            createUserObject();
                             File toDeleteFile = new File("MainProject/UserFolder/" + userUsername + userPass + ".txt");
                             fileName = toDeleteFile;
                             if(fileName.exists())
@@ -128,10 +124,11 @@ public class Menu
                         String newUsername = sysSc.next();
                         System.out.print("Enter your new password: ");
                         String newPass = sysSc.next();
+                        createUserObject();
                         File userFile = new File("MainProject/UserFolder/" + newUsername + newPass + ".txt");
                         FileWriter userWriter = new FileWriter(userFile, true);
                         fileName = userFile;
-                        if(creds.containsKey(newUsername))
+                        if(userFile.exists())
                         {
                             System.out.println("Error: That username is taken!");
                         }
@@ -174,18 +171,23 @@ public class Menu
                     else if(userAction == 2)
                     {
                         boolean stayInMovieList = true;
-                        while(stayInMovieList) {
+                        while(stayInMovieList)
+                        {
                             System.out.println();
-                            for (int i = 0; i < theTheater.getMovies().size(); i++){
+                            for (int i = 0; i < theTheater.getMovies().size(); i++)
+                            {
                                 System.out.println("(" + theTheater.getMovies().get(i).getID() + ") Title: " +
                                         theTheater.getMovies().get(i).getTitle());
                             }
                             System.out.print("\n Enter the corresponding number to the movie you wish to view more of.\n\t" +
-                                    "Or, enter -1 to search for a movie, or -2 to quit:  ");
+                                    "Or, enter -1 to search for a movie, -2 to buy a ticket, or -3 to quit:  ");
                             int browseAction = sysSc.nextInt();
-                            if (browseAction <0){
-                                if (browseAction == -1){
+                            if (browseAction <0)
+                            {
+                                if (browseAction == -1)
+                                {
                                     //SEARCH
+                                    System.out.println("IN SEARCH :)))");
                                     int searchOption = 0;
                                     //TODO make sure to add ratings as a search option when that is finished
                                     System.out.println("What would you like to search by?" +
@@ -193,32 +195,85 @@ public class Menu
                                             "\n (2) Genre");
                                     searchOption = sysSc.nextInt();
                                     sysSc.nextLine();
-                                    if (searchOption == 1) {
+                                    if (searchOption == 1)
+                                    {
                                         System.out.print("Enter the title you would like to search for: ");
                                         String userSearchTitle = sysSc.nextLine();
 
-                                        for (int c = 0; c < theTheater.getMovies().size(); c++) {
-                                            if (theTheater.getMovies().get(c).getTitle().equals(userSearchTitle) || theTheater.getMovies().get(c).getTitle().toLowerCase().equals(userSearchTitle)) {
+                                        for (int c = 0; c < theTheater.getMovies().size(); c++)
+                                        {
+                                            if (theTheater.getMovies().get(c).getTitle().equals(userSearchTitle))
+                                            {
                                                 System.out.println(theTheater.getMovies().get(c).toString());
                                             }
                                         }
 
                                     }
-                                    else if (searchOption == 2) {
-                                        System.out.print("Enter the title you would like to search for: ");
+                                    else if (searchOption == 2)
+                                    {
+                                        System.out.print("Enter the genre you would like to search for: ");
                                         String userSearchGenre = sysSc.nextLine();
 
-                                        for (int c = 0; c < theTheater.getMovies().size(); c++) {
-                                            if (theTheater.getMovies().get(c).getGenre().equals(userSearchGenre)) {
+                                        for (int c = 0; c < theTheater.getMovies().size(); c++)
+                                        {
+                                            if (theTheater.getMovies().get(c).getGenre().equals(userSearchGenre))
+                                            {
                                                 System.out.println(theTheater.getMovies().get(c).toString());
                                             }
                                         }
                                     }
                                 }
+                                else if(browseAction == -3)
+                                {
+                                    stayInMovieList = false;
+                                }
+                                else if(browseAction == -2)
+                                {
+                                    System.out.println("What movie would you like to purchase a ticket for?");
+                                    for (int i = 0; i < theTheater.getMovies().size(); i++)
+                                    {
+                                        System.out.println("(" + theTheater.getMovies().get(i).getID() + ") Title: " +
+                                                theTheater.getMovies().get(i).getTitle());
+                                    }
+                                    int movieChoice = sysSc.nextInt();
+                                    for (int j = 0; j < theTheater.getMovies().size(); j++) {
+                                        if (movieChoice == theTheater.getMovies().get(j).getID()) {
+                                            // display a handful of dates / times
+                                            Random rn = new Random();
+                                            System.out.println("Pick a date and time.");
+                                            ArrayList<Date> dates = new ArrayList<>();
+                                            ArrayList<String> times = new ArrayList<>();
+                                            int month = 0;
+                                            int day = 0;
+                                            int year = 0;
+                                            String showTime = "";
+                                            for (int i = 0; i < 5; i++) {
+                                                month = (1 + rn.nextInt(13));
+                                                day = (1 + rn.nextInt(30));
+                                                year = 2021;
+                                                Date newDate = new Date(year, month, day);
+                                                showTime = (1 + rn.nextInt(12)) + ":" + (10 + rn.nextInt(60));
+                                                dates.add(newDate);
+                                                times.add(showTime);
+                                                System.out.println("(" + i + ") " + (1 + rn.nextInt(13)) + "/" + (1 + rn.nextInt(30)) + "/" + 2021 + "   " + showTime);
+                                            }
+                                            int dateTimeChoice = sysSc.nextInt();
+                                            Date ticketDate = new Date(year, month, day);
+                                            Ticket newTicket = new Ticket(theTheater.getAddress(), theTheater.getMovies().get(j), dates.get(dateTimeChoice), times.get(dateTimeChoice), 1);
+                                            currentUser.buyTicket(newTicket);
+                                            FileWriter tmpWriter = new FileWriter(fileName, true);
+                                            tmpWriter.write(newTicket.toString() + "\n");
+                                            tmpWriter.close();
+                                            System.out.println("Added movie: " + newTicket.toString());
+                                        }
+                                    }
+                                }
                             }
-                            else{
-                                for (int j = 0; j < theTheater.getMovies().size(); j++){
-                                    if (browseAction == theTheater.getMovies().get(j).getID()){
+                            else {
+                                for (int j = 0; j < theTheater.getMovies().size(); j++)
+                                {
+                                    if (browseAction == theTheater.getMovies().get(j).getID())
+                                    {
                                         System.out.println("\n"+theTheater.getMovies().get(j).toString() + "\n");
                                     }
                                 }
@@ -228,12 +283,15 @@ public class Menu
                     }
                     else if(userAction == 3)
                     {
-                        if(currentUser.getCurrentTix().size()==0){
+                        if(currentUser.getCurrentTix().size()==0)
+                        {
                             System.out.println("You have no tickets");
                         }
-                        else{
+                        else
+                            {
                             System.out.println("Tickets: \n");
-                            for(Ticket t: currentUser.getCurrentTix()){
+                            for(Ticket t: currentUser.getCurrentTix())
+                            {
                                 System.out.println(t.toString());
                             }
                         }
@@ -324,9 +382,17 @@ public class Menu
                             String rawTitle = sc.nextLine();
                             String stripped = rawTitle.replaceAll("\\s", "");
                             System.out.println("MainProject/MoviesFolder/" + stripped + ".txt");
-                            File toDelete = new File("MainProject/MoviesFolder/" + stripped + ".txt");
-                            toDelete.delete();
-                            System.out.println(rawTitle + " Deleted.");
+                            File del = new File("MainProject/MoviesFolder/" + stripped + ".txt");
+                            movieFileToDelete = del;
+                            if(movieFileToDelete.exists())
+                            {
+                                System.out.println("found da file");
+                                movieFileToDelete.delete();
+                            }
+                            else
+                            {
+                                System.out.println("Couldnt delete");
+                            }
                         }
                         else if (adminFunc == 4)
                         {
