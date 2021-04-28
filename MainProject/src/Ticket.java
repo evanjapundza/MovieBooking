@@ -72,14 +72,23 @@ public class Ticket {
     @Override
     public String toString() {
         //generated toString
-        return "Ticket{" +
-                "location='" + location + '\'' +
-                ", movie=" + movie +
-                ", showdate=" + showdate +
-                ", showtime='" + showtime + '\'' +
-                ", viewers=" + viewers +
-                ", seatNum=" + seatNum +
-                '}';
+//        return "Ticket{" +
+//                "location='" + location + '\'' +
+//                ", movie=" + movie +
+//                ", showdate=" + showdate +
+//                ", showtime='" + showtime + '\'' +
+//                ", viewers=" + viewers +
+//                ", seatNum=" + seatNum +
+//                '}';
+        return this.movie.getTitle() + "\n" + this.movie.getGenre() + "\n" + this.movie.getReleaseDate().getMonth() + " " + this.movie.getReleaseDate().getDay()
+                + " " + this.movie.getReleaseDate().getYear() +"\n"
+                + this.showtime + "\n" + showdate.getMonth() + " " + showdate.getDay() + " " + showdate.getYear()
+                + "\n" + seatNum;
+    }
+
+    public String formattedToString(){
+        return "Movie : " + this.movie.getTitle() + " Show Date: " + this.showdate.getMonth() + "/" + this.showdate.getDay()
+                 + "/" + this.showdate.getYear() + " Show Time: " + this.showtime + " Seat Number: " + this.seatNum;
     }
 
     public void hasUserWatched() {
