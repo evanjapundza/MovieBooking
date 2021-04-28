@@ -321,9 +321,11 @@ public class Menu
                         //TODO DELETE MOVIE FUNCTION NOT DELETING MOVIE??
                         else if (adminFunc == 3){
                             Scanner sc = new Scanner(System.in);
+                            System.out.print("Enter the exact name of the movie you wish to delete: ");
                             String rawTitle = sc.nextLine();
                             String stripped = rawTitle.replaceAll("\\s", "");
-                            File toDelete = new File("MainProject//MoviesFolder//" + stripped + ".txt");
+                            System.out.println("MainProject/MoviesFolder/" + stripped + ".txt");
+                            File toDelete = new File("MainProject/MoviesFolder/" + stripped + ".txt");
                             toDelete.delete();
                             System.out.println(rawTitle + " Deleted.");
                         }
