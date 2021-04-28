@@ -105,7 +105,7 @@ public class Menu
                             String userPass = sysSc.next();
                             currentPassword = userPass;
                             createUserObject();
-                            File toDeleteFile = new File("MainProject/UserFolder/" + userUsername + userPass + ".txt");
+                            File toDeleteFile = new File("MainProject/UserFolder/" + userUsername + ".txt");
                             fileName = toDeleteFile;
                             if(fileName.exists())
                             {
@@ -125,8 +125,7 @@ public class Menu
                         System.out.print("Enter your new password: ");
                         String newPass = sysSc.next();
                         createUserObject();
-                        File userFile = new File("MainProject/UserFolder/" + newUsername + newPass + ".txt");
-                        FileWriter userWriter = new FileWriter(userFile, true);
+                        File userFile = new File("MainProject/UserFolder/" + newUsername + ".txt");
                         fileName = userFile;
                         if(userFile.exists())
                         {
@@ -134,6 +133,7 @@ public class Menu
                         }
                         else
                         {
+                            FileWriter userWriter = new FileWriter(userFile, true);
                             userWriter.write(newUsername + "   " + newPass + "\n");
                             userWriter.close();
                             stayInUser = false;
