@@ -1,5 +1,0 @@
-hi
-HappyFeet.txt
-Madagasgar.txt
-RV.txt
-SpiderManFarFromHome.txt
