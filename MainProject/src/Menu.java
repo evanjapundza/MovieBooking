@@ -15,25 +15,6 @@ public class Menu
 	private static File fileName;
 	private static File movieFileToDelete;
 
-
-//	private static void populateMovies(Theater theater) throws FileNotFoundException{
-//        ArrayList<Movie> movieText = new ArrayList<>();
-//        File movieData = new File("MainProject/src/movies.txt");
-//        Scanner movieSc = new Scanner(movieData);
-//        while(movieSc.hasNextLine()){
-//            String title = movieSc.nextLine();
-//            String genre = movieSc.next();
-//            int dateMo = movieSc.nextInt();
-//            int dateDay = movieSc.nextInt();
-//            int dateYear = movieSc.nextInt();
-//            Date movieDate = new Date(dateYear, dateMo, dateDay);
-//            Movie newMovie = new Movie(title, genre, movieDate);
-//            movieText.add(newMovie);
-//            movieSc.nextLine();
-//        }
-//        theater.setMovies(movieText);
-//    }
-
     public static String getAdminUser(){
         return adminUser;
     }
@@ -41,6 +22,53 @@ public class Menu
     public static String getAdminPass(){
         return adminPass;
     }
+
+    public static void populateUserTix (User user) throws FileNotFoundException{
+       String fileName = user.getUsername() + user.getPassword();
+       File file = new File("MainProject/UserFolder/" + fileName + ".txt");
+       Scanner userSc = new Scanner(file);
+       int i = 0;
+       while (userSc.hasNextLine()){
+           if (i > 0){
+               userSc.nextLine();
+           }
+           String tixTitle = userSc.nextLine();
+           System.out.println("tixTitle = " + tixTitle);
+           String tixGenre = userSc.nextLine();
+           System.out.println(tixGenre);
+           int tixMovMonth = userSc.nextInt();
+           System.out.println(tixMovMonth);
+           int tixMovDay = userSc.nextInt();
+           System.out.println(tixMovDay);
+           int tixMovYear = userSc.nextInt();
+           System.out.println(tixMovDay);
+           userSc.nextLine();
+           String tixTime = userSc.nextLine();
+           System.out.println(tixTime);
+           int tixMonth = userSc.nextInt();
+           System.out.println(tixMonth);
+           int tixDay = userSc.nextInt();
+           System.out.println(tixDay);
+           int tixYear = userSc.nextInt();
+           System.out.println(tixYear);
+           int tixSeatNum = userSc.nextInt();
+           System.out.println(tixSeatNum);
+           userSc.nextLine();
+           String isCurrent = userSc.next();
+           System.out.println(isCurrent);
+           if (isCurrent.equals("1")){
+               Date movieRelDate = new Date(tixMovMonth, tixMovDay, tixMovYear);
+               Date showDate = new Date(tixMonth, tixDay, tixYear);
+               Movie newMovie = new Movie(tixTitle, tixGenre, movieRelDate);
+               Ticket newTix = new Ticket("The Theater", newMovie, showDate, tixTime, tixSeatNum);
+               user.getCurrentTix().add(newTix);
+           }
+           i++;
+       }
+
+
+    }
+
 
     private static void populateMovies(Theater theater) throws FileNotFoundException {
         ArrayList<Movie> movieList = new ArrayList<>();
@@ -69,7 +97,6 @@ public class Menu
     {
         //creating user object using key and value from ma
         currentUser = new User(currentUsername, currentPassword);
-
     }
 	
 	public static void main(String [] args) throws IOException, FileAlreadyExistsException {
@@ -105,12 +132,22 @@ public class Menu
                             String userPass = sysSc.next();
                             currentPassword = userPass;
                             createUserObject();
-                            File toDeleteFile = new File("MainProject/UserFolder/" + userUsername + userPass + ".txt");
+                            File toDeleteFile = new File("MainProject/UserFolder/" + userUsername + ".txt");
                             fileName = toDeleteFile;
                             if(fileName.exists())
                             {
-                                stayInUser = false;
-                                loggingIn = false;
+                                Scanner readCreds = new Scanner(fileName);
+                                readCreds.next();
+                                String password = readCreds.next();
+                                if(currentPassword.equals(password))
+                                {
+                                    stayInUser = false;
+                                    loggingIn = false;
+                                }
+                                else
+                                {
+                                    System.out.println("Error: Invalid username or password");
+                                }
                             }
                             else
                             {
@@ -125,8 +162,7 @@ public class Menu
                         System.out.print("Enter your new password: ");
                         String newPass = sysSc.next();
                         createUserObject();
-                        File userFile = new File("MainProject/UserFolder/" + newUsername + newPass + ".txt");
-                        FileWriter userWriter = new FileWriter(userFile, true);
+                        File userFile = new File("MainProject/UserFolder/" + newUsername + ".txt");
                         fileName = userFile;
                         if(userFile.exists())
                         {
@@ -134,6 +170,7 @@ public class Menu
                         }
                         else
                         {
+                            FileWriter userWriter = new FileWriter(userFile, true);
                             userWriter.write(newUsername + "   " + newPass + "\n");
                             userWriter.close();
                             stayInUser = false;
@@ -260,9 +297,12 @@ public class Menu
                                             int dateTimeChoice = sysSc.nextInt();
                                             Date ticketDate = new Date(year, month, day);
                                             Ticket newTicket = new Ticket(theTheater.getAddress(), theTheater.getMovies().get(j), dates.get(dateTimeChoice), times.get(dateTimeChoice), 1);
+                                            newTicket.setSeatNum(rn.nextInt(80) + 1);
                                             currentUser.buyTicket(newTicket);
                                             FileWriter tmpWriter = new FileWriter(fileName, true);
-                                            tmpWriter.write(newTicket.toString() + "\n");
+                                            //TODO modify toString
+                                            tmpWriter.write("\n" + newTicket.toString());
+                                            tmpWriter.write("\n" + "1");
                                             tmpWriter.close();
                                             System.out.println("Added movie: " + newTicket.toString());
                                         }
@@ -283,16 +323,17 @@ public class Menu
                     }
                     else if(userAction == 3)
                     {
+                        Menu.populateUserTix(currentUser);
                         if(currentUser.getCurrentTix().size()==0)
                         {
                             System.out.println("You have no tickets");
                         }
-                        else
-                            {
+                        else {
                             System.out.println("Tickets: \n");
                             for(Ticket t: currentUser.getCurrentTix())
                             {
-                                System.out.println(t.toString());
+                                System.out.println(t.formattedToString());
+                                System.out.println("--------------------");
                             }
                         }
                     }
@@ -386,8 +427,8 @@ public class Menu
                             movieFileToDelete = del;
                             if(movieFileToDelete.exists())
                             {
-                                System.out.println("found da file");
                                 movieFileToDelete.delete();
+                                System.out.println(rawTitle + " deleted.");
                             }
                             else
                             {
