@@ -43,38 +43,47 @@ public class Menu
     }
 
     public static void populateUserTix (User user) throws FileNotFoundException{
-       String fileName = user.getUsername() + user.getPassword();
+       //String fileName = user.getUsername() + user.getPassword();
+        String fileName = user.getUsername();
        File file = new File("MainProject/UserFolder/" + fileName + ".txt");
        Scanner userSc = new Scanner(file);
        int i = 0;
+       userSc.nextLine();
        while (userSc.hasNextLine()){
-           if (i > 0){
-               userSc.nextLine();
+          // userSc.nextLine();
+           //userSc.nextLine();
+           if (i == 0){
+               //userSc.nextLine();
+               //userSc.nextLine();
+              // userSc.nextLine();
            }
            String tixTitle = userSc.nextLine();
            System.out.println("tixTitle = " + tixTitle);
            String tixGenre = userSc.nextLine();
-           System.out.println(tixGenre);
+           System.out.println("Genre " + tixGenre);
            int tixMovMonth = userSc.nextInt();
-           System.out.println(tixMovMonth);
+           System.out.println("tixMovMonth " + tixMovMonth);
            int tixMovDay = userSc.nextInt();
-           System.out.println(tixMovDay);
+           System.out.println("tixMovDay " + tixMovDay);
            int tixMovYear = userSc.nextInt();
-           System.out.println(tixMovDay);
+           System.out.println("tixMovDay " + tixMovDay);
            userSc.nextLine();
            String tixTime = userSc.nextLine();
-           System.out.println(tixTime);
+           System.out.println("tixTime " + tixTime);
            int tixMonth = userSc.nextInt();
-           System.out.println(tixMonth);
+           System.out.println("tixMonth " + tixMonth);
            int tixDay = userSc.nextInt();
-           System.out.println(tixDay);
+           System.out.println("tixDay " + tixDay);
            int tixYear = userSc.nextInt();
-           System.out.println(tixYear);
+           System.out.println("tixYear " + tixYear);
            int tixSeatNum = userSc.nextInt();
-           System.out.println(tixSeatNum);
+           System.out.println("tixSeatNum " + tixSeatNum);
            userSc.nextLine();
            String isCurrent = userSc.next();
-           System.out.println(isCurrent);
+           System.out.println("isCurrent " + isCurrent);
+           if (userSc.hasNextLine()){
+               userSc.nextLine();
+           }
            if (isCurrent.equals("1")){
                Date movieRelDate = new Date(tixMovMonth, tixMovDay, tixMovYear);
                Date showDate = new Date(tixMonth, tixDay, tixYear);
@@ -199,7 +208,8 @@ public class Menu
                         else
                         {
                             FileWriter userWriter = new FileWriter(userFile, true);
-                            userWriter.write(newUsername + "   " + newPass + "\n");
+                           userWriter.write(newUsername + "   " + newPass );
+                           // userWriter.write("");
                             userWriter.close();
                             stayInUser = false;
                         }
@@ -465,7 +475,6 @@ public class Menu
                             titleWrite.close();
                             detailWrite.close();
                         }
-                        //TODO DELETE MOVIE FUNCTION NOT DELETING MOVIE??
                         else if (adminFunc == 3){
                             Scanner sc = new Scanner(System.in);
                             System.out.print("Enter the exact name of the movie you wish to delete: ");
