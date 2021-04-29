@@ -23,6 +23,37 @@ public class Menu
         return adminPass;
     }
 
+    public static void populateHistory(User user) throws FileNotFoundException
+    {
+        String userName = user.getUsername();
+        File currentTix = new File("MainProject/UserHistory/" + userName + "History.txt");
+        Scanner userSc = new Scanner(currentTix);
+        if(!userSc.hasNextLine())
+        {
+            return;
+        }
+        while(userSc.hasNextLine())
+        {
+            String tixTitle = userSc.nextLine();
+            String tixGenre = userSc.nextLine();
+            int tixMovMonth = userSc.nextInt();
+            int tixMovDay = userSc.nextInt();
+            int tixMovYear = userSc.nextInt();
+            userSc.nextLine();
+            String tixTime = userSc.nextLine();
+            int tixMonth = userSc.nextInt();
+            int tixDay = userSc.nextInt();
+            int tixYear = userSc.nextInt();
+            int tixSeatNum = userSc.nextInt();
+            userSc.nextLine();
+            Date movieRelDate = new Date(tixMovMonth, tixMovDay, tixMovYear);
+            Date showDate = new Date(tixMonth, tixDay, tixYear);
+            Movie newMovie = new Movie(tixTitle, tixGenre, movieRelDate);
+            Ticket newTix = new Ticket("The Theater", newMovie, showDate, tixTime, tixSeatNum);
+            currentUser.getPastTix().add(newTix);
+        }
+    }
+
     public static void populateUserTix (User user) throws FileNotFoundException{
        //String fileName = user.getUsername() + user.getPassword();
         String fileName = user.getUsername();
@@ -41,30 +72,27 @@ public class Menu
            String tixTitle = userSc.nextLine();
            System.out.println("tixTitle = " + tixTitle);
            String tixGenre = userSc.nextLine();
-           System.out.println("Genre " + tixGenre);
+           System.out.println(tixGenre);
            int tixMovMonth = userSc.nextInt();
-           System.out.println("tixMovMonth " + tixMovMonth);
+           System.out.println(tixMovMonth);
            int tixMovDay = userSc.nextInt();
-           System.out.println("tixMovDay " + tixMovDay);
+           System.out.println(tixMovDay);
            int tixMovYear = userSc.nextInt();
-           System.out.println("tixMovDay " + tixMovDay);
+           System.out.println(tixMovDay);
            userSc.nextLine();
            String tixTime = userSc.nextLine();
-           System.out.println("tixTime " + tixTime);
+           System.out.println(tixTime);
            int tixMonth = userSc.nextInt();
-           System.out.println("tixMonth " + tixMonth);
+           System.out.println(tixMonth);
            int tixDay = userSc.nextInt();
-           System.out.println("tixDay " + tixDay);
+           System.out.println(tixDay);
            int tixYear = userSc.nextInt();
-           System.out.println("tixYear " + tixYear);
+           System.out.println(tixYear);
            int tixSeatNum = userSc.nextInt();
-           System.out.println("tixSeatNum " + tixSeatNum);
+           System.out.println(tixSeatNum);
            userSc.nextLine();
            String isCurrent = userSc.next();
-           System.out.println("isCurrent " + isCurrent);
-           if (userSc.hasNextLine()){
-               userSc.nextLine();
-           }
+           System.out.println(isCurrent);
            if (isCurrent.equals("1")){
                Date movieRelDate = new Date(tixMovMonth, tixMovDay, tixMovYear);
                Date showDate = new Date(tixMonth, tixDay, tixYear);
@@ -370,10 +398,36 @@ public class Menu
                         }
                         else {
                             System.out.println("Tickets: \n");
-                            for(Ticket t: currentUser.getCurrentTix())
+                            //Menu.populateHistory(currentUser);
+                            //System.out.println(currentUser.getPastTix());
+                            //System.out.println(currentUser.getCurrentTix());
+                            for(Ticket pastTix : currentUser.getPastTix())
                             {
-                                System.out.println(t.formattedToString());
-                                System.out.println("--------------------");
+                                for(int j = 0; j < currentUser.getCurrentTix().size(); j++)
+                                {
+                                    if(!(pastTix.toString().equals(currentUser.getPastTix().get(j).toString())))
+                                    {
+                                        System.out.println("(" + j + ") " + currentUser.getCurrentTix().get(j).formattedToString());
+                                        System.out.println("--------------------");
+                                    }
+                                }
+                                break;
+                            }
+                            System.out.println("Enter the index number of the movie you have watched");
+                            int yesOrNo = sysSc.nextInt();
+                            for (int j = 0; j < currentUser.getCurrentTix().size(); j++)
+                            {
+                                if (yesOrNo == theTheater.getMovies().get(j).getID())
+                                {
+                                    Movie daMovie = theTheater.getMovies().get(j);
+                                    File userHistory = new File("MainProject/UserHistory/" + currentUser.getUsername() + "History.txt");
+                                    FileWriter historyWriter = new FileWriter(userHistory, true);
+                                    historyWriter.write(currentUser.getCurrentTix().get(j).toString() + "\n");
+                                    currentUser.getPastTix().add(currentUser.getCurrentTix().get(j));
+                                    currentUser.getCurrentTix().remove(j);
+                                    historyWriter.close();
+                                    System.out.println("Ima sliiiiide, anyway I want");
+                                }
                             }
                         }
                     }
@@ -456,6 +510,7 @@ public class Menu
                             titleWrite.close();
                             detailWrite.close();
                         }
+                        //TODO DELETE MOVIE FUNCTION NOT DELETING MOVIE??
                         else if (adminFunc == 3){
                             Scanner sc = new Scanner(System.in);
                             System.out.print("Enter the exact name of the movie you wish to delete: ");
