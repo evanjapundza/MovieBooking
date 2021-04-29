@@ -338,7 +338,7 @@ public class Menu
                                                 day = (1 + rn.nextInt(30));
                                                 year = 2021;
                                                 Date newDate = new Date(year, month, day);
-                                                showTime = (1 + rn.nextInt(12)) + ":" + (10 + rn.nextInt(60));
+                                                showTime = (1 + rn.nextInt(11)) + ":" + (10 + rn.nextInt(49));
                                                 dates.add(newDate);
                                                 times.add(showTime);
                                                 System.out.println("(" + i + ") " + (1 + rn.nextInt(13)) + "/" + (1 + rn.nextInt(30)) + "/" + 2021 + "   " + showTime);
