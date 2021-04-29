@@ -475,7 +475,6 @@ public class Menu
                             titleWrite.close();
                             detailWrite.close();
                         }
-                        //TODO DELETE MOVIE FUNCTION NOT DELETING MOVIE??
                         else if (adminFunc == 3){
                             Scanner sc = new Scanner(System.in);
                             System.out.print("Enter the exact name of the movie you wish to delete: ");
