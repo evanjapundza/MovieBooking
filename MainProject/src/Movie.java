@@ -7,7 +7,7 @@ public class Movie
     private Date releaseDate;
     private ArrayList<String> cast;
     private String description;
-    private ArrayList<Double> ratings;
+    private double ratings;
     private Boolean isRunning;
     private static int IDstat = -1;
     private int ID;
@@ -19,7 +19,6 @@ public class Movie
     	this.genre = genre;
     	this.releaseDate = relDate;
     	this.cast = new ArrayList<>();
-    	this.ratings = new ArrayList<>();
     	this.isRunning = true; 
     	this.description = "";
     	IDstat++;
@@ -82,21 +81,15 @@ public class Movie
         this.title = title;
     }
 
-    //return the average of the arraylist of ratings to give the average rating
-    public double getAverageRating()
+    //allow the user to add a rating of the movie, must be between 0 and 5, add constraints
+    public void setRating(Double rating)
     {
-        double ret = 0; //return variable; default value
-        for(double rating: ratings) { //summing numbers in ratings
-        	ret += rating;
-        }
-        ret /= ratings.size(); //dividing by total elements to get average
-        return ret;
+        this.ratings = rating;
     }
 
-    //allow the user to add a rating of the movie, must be between 0 and 5, add constraints
-    public void addRating(Double rating)
+    public double getRating()
     {
-        ratings.add(rating);
+        return ratings;
     }
 
     //determine whether or not the movie is running
