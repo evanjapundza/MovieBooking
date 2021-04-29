@@ -1,4 +1,0 @@
-HappyFeet.txt
-movie1.txt
-movie2.txt
-movie3.txt
