@@ -34,26 +34,6 @@ public class Menu
 //        theater.setMovies(movieText);
 //    }
 
-    public static double computeRating(Movie movie) throws FileNotFoundException
-    {
-        String strippedTitle = movie.getTitle().replaceAll("\\s", "");
-        File movieFile = new File("MainProject/MoviesFolder/" + strippedTitle + ".txt");
-        Scanner in = new Scanner(movieFile);
-        int counter = 0;
-        double total = 0;
-        in.nextLine();
-        in.nextLine();
-        in.nextLine();
-        while(in.hasNextDouble())
-        {
-            total += in.nextDouble();
-            counter++;
-        }
-        double result = total/counter;
-        movie.setRating(result);
-        return result;
-    }
-
     public static String getAdminUser(){
         return adminUser;
     }
@@ -61,6 +41,53 @@ public class Menu
     public static String getAdminPass(){
         return adminPass;
     }
+
+    public static void populateUserTix (User user) throws FileNotFoundException{
+       String fileName = user.getUsername() + user.getPassword();
+       File file = new File("MainProject/UserFolder/" + fileName + ".txt");
+       Scanner userSc = new Scanner(file);
+       int i = 0;
+       while (userSc.hasNextLine()){
+           if (i > 0){
+               userSc.nextLine();
+           }
+           String tixTitle = userSc.nextLine();
+           System.out.println("tixTitle = " + tixTitle);
+           String tixGenre = userSc.nextLine();
+           System.out.println(tixGenre);
+           int tixMovMonth = userSc.nextInt();
+           System.out.println(tixMovMonth);
+           int tixMovDay = userSc.nextInt();
+           System.out.println(tixMovDay);
+           int tixMovYear = userSc.nextInt();
+           System.out.println(tixMovDay);
+           userSc.nextLine();
+           String tixTime = userSc.nextLine();
+           System.out.println(tixTime);
+           int tixMonth = userSc.nextInt();
+           System.out.println(tixMonth);
+           int tixDay = userSc.nextInt();
+           System.out.println(tixDay);
+           int tixYear = userSc.nextInt();
+           System.out.println(tixYear);
+           int tixSeatNum = userSc.nextInt();
+           System.out.println(tixSeatNum);
+           userSc.nextLine();
+           String isCurrent = userSc.next();
+           System.out.println(isCurrent);
+           if (isCurrent.equals("1")){
+               Date movieRelDate = new Date(tixMovMonth, tixMovDay, tixMovYear);
+               Date showDate = new Date(tixMonth, tixDay, tixYear);
+               Movie newMovie = new Movie(tixTitle, tixGenre, movieRelDate);
+               Ticket newTix = new Ticket("The Theater", newMovie, showDate, tixTime, tixSeatNum);
+               user.getCurrentTix().add(newTix);
+           }
+           i++;
+       }
+
+
+    }
+
 
     private static void populateMovies(Theater theater) throws FileNotFoundException {
         ArrayList<Movie> movieList = new ArrayList<>();
@@ -201,8 +228,7 @@ public class Menu
                         }
                         else{
                             System.out.println("Ticket History: \n");
-                            for(Ticket t: currentUser.getPastTix())
-                            {
+                            for(Ticket t: currentUser.getPastTix()){
                                 System.out.println(t.toString());
                             }
                         }
@@ -320,9 +346,12 @@ public class Menu
                                             int dateTimeChoice = sysSc.nextInt();
                                             Date ticketDate = new Date(year, month, day);
                                             Ticket newTicket = new Ticket(theTheater.getAddress(), theTheater.getMovies().get(j), dates.get(dateTimeChoice), times.get(dateTimeChoice), 1);
+                                            newTicket.setSeatNum(rn.nextInt(80) + 1);
                                             currentUser.buyTicket(newTicket);
                                             FileWriter tmpWriter = new FileWriter(fileName, true);
-                                            tmpWriter.write(newTicket.toString() + "\n");
+                                            //TODO modify toString
+                                            tmpWriter.write("\n" + newTicket.toString());
+                                            tmpWriter.write("\n" + "1");
                                             tmpWriter.close();
                                             System.out.println("Added movie: " + newTicket.toString());
                                         }
@@ -343,6 +372,7 @@ public class Menu
                     }
                     else if(userAction == 3)
                     {
+                        Menu.populateUserTix(currentUser);
                         if(currentUser.getCurrentTix().size()==0)
                         {
                             System.out.println("You have no tickets");
@@ -351,7 +381,8 @@ public class Menu
                             System.out.println("Tickets: \n");
                             for(Ticket t: currentUser.getCurrentTix())
                             {
-                                System.out.println(t.toString());
+                                System.out.println(t.formattedToString());
+                                System.out.println("--------------------");
                             }
                         }
                     }
@@ -445,8 +476,8 @@ public class Menu
                             movieFileToDelete = del;
                             if(movieFileToDelete.exists())
                             {
-                                System.out.println("found da file");
                                 movieFileToDelete.delete();
+                                System.out.println(rawTitle + " deleted.");
                             }
                             else
                             {
