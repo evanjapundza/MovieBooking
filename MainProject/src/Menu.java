@@ -15,25 +15,6 @@ public class Menu
 	private static File fileName;
 	private static File movieFileToDelete;
 
-
-//	private static void populateMovies(Theater theater) throws FileNotFoundException{
-//        ArrayList<Movie> movieText = new ArrayList<>();
-//        File movieData = new File("MainProject/src/movies.txt");
-//        Scanner movieSc = new Scanner(movieData);
-//        while(movieSc.hasNextLine()){
-//            String title = movieSc.nextLine();
-//            String genre = movieSc.next();
-//            int dateMo = movieSc.nextInt();
-//            int dateDay = movieSc.nextInt();
-//            int dateYear = movieSc.nextInt();
-//            Date movieDate = new Date(dateYear, dateMo, dateDay);
-//            Movie newMovie = new Movie(title, genre, movieDate);
-//            movieText.add(newMovie);
-//            movieSc.nextLine();
-//        }
-//        theater.setMovies(movieText);
-//    }
-
     public static String getAdminUser(){
         return adminUser;
     }
