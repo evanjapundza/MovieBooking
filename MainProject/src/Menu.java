@@ -59,7 +59,7 @@ public class Menu
             Movie newMovie = new Movie(tixTitle, tixGenre, movieRelDate);
             Ticket newTix = new Ticket("The Theater", newMovie, showDate, tixTime, tixSeatNum);
             currentUser.getPastTix().add(newTix);
-            userSc.close();
+            //userSc.close();
         }
     }
 
@@ -86,15 +86,15 @@ public class Menu
            int tixYear = userSc.nextInt();
            int tixSeatNum = userSc.nextInt();
            String isCurrent = userSc.next();
-           if (isCurrent.equals("1")){
+           if (isCurrent.equals("1")) {
                Date movieRelDate = new Date(tixMovMonth, tixMovDay, tixMovYear);
                Date showDate = new Date(tixMonth, tixDay, tixYear);
                Movie newMovie = new Movie(tixTitle, tixGenre, movieRelDate);
                Ticket newTix = new Ticket("The Theater", newMovie, showDate, tixTime, tixSeatNum);
                user.getCurrentTix().add(newTix);
            }
-           userSc.close();
        }
+       // userSc.close();
     }
 
 
@@ -251,6 +251,27 @@ public class Menu
                                 System.out.println(t.formattedToString());
                             }
                             System.out.println("\n---------------------");
+                            System.out.println("Select a movie to rate: ");
+                            for(Ticket t: currentUser.getPastTix())
+                            {
+                                System.out.println("(" + t.getMovie().getID() + ") " + t.formattedToString());
+                            }
+                            int userMoviePick = sysSc.nextInt();
+                            for(Ticket t : currentUser.getPastTix())
+                            {
+                                if(userMoviePick == t.getMovie().getID())
+                                {
+                                    System.out.println("Rate this movie out of 5");
+                                    double rating = sysSc.nextDouble();
+                                    String name = t.getMovie().getTitle();
+                                    String stripName = name.replaceAll("\\s", "");
+                                    File addRating = new File("MainProject/MoviesFolder/" + stripName + ".txt");
+                                    FileWriter ratingAdd = new FileWriter(addRating, true);
+                                    ratingAdd.write("\n" + rating + "\n");
+                                    ratingAdd.close();
+                                }
+                            }
+
                         }
                     }
                     else if(userAction == 2)
