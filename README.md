@@ -14,3 +14,6 @@ User: Spencer Password: Chambers
 User: Collin Password: Rassel
 User: Maouloune Password: Goumballe
 User: Evan Password: Japundza
+
+To run program, run the Menu.java file.
+
