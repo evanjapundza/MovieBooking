@@ -235,7 +235,8 @@ public class Menu
                     if(userAction == 1)
                     {
                         Menu.populateHistory(currentUser);
-                        if(currentUser.getPastTix().size()==0){
+                        if(currentUser.getPastTix().size()==0)
+                        {
                             System.out.println("No history available");
                         }
                         else{
