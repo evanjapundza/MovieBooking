@@ -24,6 +24,10 @@ public class Menu
         return adminPass;
     }
 
+    public static void deleteAccount(File file)
+    {
+        file.delete();
+    }
     public static void populateHistory(User user) throws FileNotFoundException
     {
         String userName = user.getUsername();
@@ -55,6 +59,7 @@ public class Menu
             Movie newMovie = new Movie(tixTitle, tixGenre, movieRelDate);
             Ticket newTix = new Ticket("The Theater", newMovie, showDate, tixTime, tixSeatNum);
             currentUser.getPastTix().add(newTix);
+            userSc.close();
         }
     }
 
@@ -88,6 +93,7 @@ public class Menu
                Ticket newTix = new Ticket("The Theater", newMovie, showDate, tixTime, tixSeatNum);
                user.getCurrentTix().add(newTix);
            }
+           userSc.close();
        }
     }
 
@@ -118,8 +124,10 @@ public class Menu
                 double result = total/counter;
                 newMovie.setRating(result);
                 movieList.add(newMovie);
+                movieSc.close();
             }
         }
+        movieListSc.close();
         theater.setMovies(movieList);
         System.out.println(movieList);
     }
@@ -172,6 +180,7 @@ public class Menu
                                 Scanner readCreds = new Scanner(fileName);
                                 readCreds.next();
                                 String password = readCreds.next();
+                                readCreds.close();
                                 if(currentPassword.equals(password))
                                 {
                                     stayInUser = false;
@@ -198,9 +207,6 @@ public class Menu
                         File userFile = new File("MainProject/UserFolder/" + newUsername + ".txt");
                         File userHistory = new File("MainProject/UserHistory/" + newUsername + "History.txt");
                         userHistory.createNewFile();
-                        //FileWriter userHisOut = new FileWriter(userHistory);
-                        //userHisOut.write("");
-                        //userHisOut.close();
                         fileName = userFile;
                         userHistoryFile = userHistory;
                         if(userFile.exists())
@@ -443,8 +449,9 @@ public class Menu
                     }
                     else if(userAction == 5)
                     {
-                        fileName.delete();
-                        userHistoryFile.delete();
+                        sysSc.close();
+                        deleteAccount(fileName);
+                        deleteAccount(userHistoryFile);
                         System.out.println("Deleted account!");
                         userMenu = false;
                         keepGoing = false;
@@ -515,6 +522,7 @@ public class Menu
                             detailWrite.write("\n" + genre +"\n" + month + " " + day + " " + year);
                             titleWrite.close();
                             detailWrite.close();
+                            sc.close();
                         }
                         else if (adminFunc == 3){
                             Scanner sc = new Scanner(System.in);
@@ -523,6 +531,7 @@ public class Menu
                             String stripped = rawTitle.replaceAll("\\s", "");
                             File del = new File("MainProject/MoviesFolder/" + stripped + ".txt");
                             movieFileToDelete = del;
+                            sc.close();
                             if(movieFileToDelete.exists())
                             {
                                 movieFileToDelete.delete();
