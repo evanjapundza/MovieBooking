@@ -7,3 +7,10 @@ to go into effect. For example, when creating an account, the text file that hol
 and re-run. This we have done for the user. However, when performing actions such as buying a ticket, the ticket will not appear in the "view tickets" section
 until the user logs out. Similarly, when an admin edits the information of a movie, the edited information will not be visible in a log out and re-run. Please refer to our
 video demo of the program for examples. We wish this process was more intuitive, but unfortunately that is what is needed.
+
+Additional Info:
+Pre-made account info
+User: Spencer Password: Chambers
+User: Collin Password: Rassel
+User: Maouloune Password: Goumballe
+User: Evan Password: Japundza
