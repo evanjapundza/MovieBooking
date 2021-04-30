@@ -1,6 +1,15 @@
+/*
+ *  Class: C212 Introduction to Software Systems
+ *  Assignment: Project(Movie Booking Application)
+ *  Group Number: 27
+ *  Group Members: Collin Rassel, Evan Japundza, Maouloune Goumballe, and Spencer Chambers
+ *  Due Date: April 30, 2021
+ */
+
 import java.util.*;
 
-public class Ticket {
+public class Ticket
+{
 
     private String location;
     private Movie movie;
@@ -8,10 +17,9 @@ public class Ticket {
     private String showtime;
     private ArrayList<User> viewers;
     private int seatNum;
-    //private Boolean userWatched;
 
-
-    public Ticket(String location, Movie movie, Date showdate, String showtime, int seatNum) {
+    public Ticket(String location, Movie movie, Date showdate, String showtime, int seatNum)
+    {
         this.location = location;
         this.movie = movie;
         this.showdate = showdate;
@@ -20,81 +28,78 @@ public class Ticket {
         viewers = new ArrayList<>();
     }
 
-    public String getLocation() {
+    public String getLocation()
+    {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(String location)
+    {
         this.location = location;
     }
 
-    public Movie getMovie() {
+    public Movie getMovie()
+    {
         return movie;
     }
 
-    public void setMovie(Movie movie) {
+    public void setMovie(Movie movie)
+    {
         this.movie = movie;
     }
 
-    public Date getShowdate() {
+    public Date getShowdate()
+    {
         return showdate;
     }
 
-    public void setShowdate(Date showdate) {
+    public void setShowdate(Date showdate)
+    {
         this.showdate = showdate;
     }
 
-    public String getShowtime() {
+    public String getShowtime()
+    {
         return showtime;
     }
 
-    public void setShowtime(String showtime) {
+    public void setShowtime(String showtime)
+    {
         this.showtime = showtime;
     }
 
-    public ArrayList<User> getViewers() {
+    public ArrayList<User> getViewers()
+    {
         return viewers;
     }
 
-    public void setViewers(ArrayList<User> viewers) {
+    public void setViewers(ArrayList<User> viewers)
+    {
         this.viewers = viewers;
     }
 
-    public int getSeatNum() {
+    public int getSeatNum()
+    {
         return seatNum;
     }
 
-    public void setSeatNum(int seatNum) {
+    public void setSeatNum(int seatNum)
+    {
         this.seatNum = seatNum;
     }
 
-
     @Override
-    public String toString() {
-        //generated toString
-//        return "Ticket{" +
-//                "location='" + location + '\'' +
-//                ", movie=" + movie +
-//                ", showdate=" + showdate +
-//                ", showtime='" + showtime + '\'' +
-//                ", viewers=" + viewers +
-//                ", seatNum=" + seatNum +
-//                '}';
+    public String toString()
+    {
         return this.movie.getTitle() + "\n" + this.movie.getGenre() + "\n" + this.movie.getReleaseDate().getMonth() + " " + this.movie.getReleaseDate().getDay()
                 + " " + this.movie.getReleaseDate().getYear() +"\n"
                 + this.showtime + "\n" + showdate.getMonth() + " " + showdate.getDay() + " " + showdate.getYear()
                 + "\n" + seatNum;
     }
 
-    public String formattedToString(){
+    public String formattedToString()
+    {
         return "Movie : " + this.movie.getTitle() + " Show Date: " + this.showdate.getMonth() + "/" + this.showdate.getDay()
                  + "/" + this.showdate.getYear() + " Show Time: " + this.showtime + " Seat Number: " + this.seatNum;
     }
-
-    public void hasUserWatched() {
-        //sets a boolean to keep track whether or not the user has watched a specific movie tied to ticket
-    }
-
-
-
 }

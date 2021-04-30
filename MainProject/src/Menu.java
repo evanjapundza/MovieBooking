@@ -1,3 +1,11 @@
+/*
+ *  Class: C212 Introduction to Software Systems
+ *  Assignment: Project(Movie Booking Application)
+ *  Group Number: 27
+ *  Group Members: Collin Rassel, Evan Japundza, Maouloune Goumballe, and Spencer Chambers
+ *  Due Date: April 30, 2021
+ */
+
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -16,31 +24,23 @@ public class Menu
     private static File userHistoryFile;
     private static File movieFileToDelete;
 
-    public static String getAdminUser(){
+    public static String getAdminUser()
+    {
         return adminUser;
     }
 
-    public static String getAdminPass(){
+    public static String getAdminPass()
+    {
         return adminPass;
     }
 
+    //delete a text file (i.e user deletes accounts)
     public static void deleteAccount(File file)
     {
         file.delete();
     }
 
-//    public static boolean isInteger(String s) { //TODO DELETE METHOD IF NECESSARY
-//        try {
-//            Integer.parseInt(s);
-//        } catch(NumberFormatException e) {
-//            return false;
-//        } catch(NullPointerException e) {
-//            return false;
-//        }
-//        // only got here if we didn't return false
-//        return true;
-//    }
-
+    //reads ticket information from a users ticket history file, and populates the user past tickets array list
     public static void populateHistory(User user) throws FileNotFoundException
     {
         String userName = user.getUsername();
@@ -72,30 +72,33 @@ public class Menu
             Movie newMovie = new Movie(tixTitle, tixGenre, movieRelDate);
             Ticket newTix = new Ticket("The Theater", newMovie, showDate, tixTime, tixSeatNum);
             currentUser.getPastTix().add(newTix);
-            //userSc.close();
         }
     }
 
-    public static int lineCounter(File file){
-        try{
+    public static int lineCounter(File file)
+    {
+        try
+        {
             long count = Files.lines(file.toPath()).count();
             int result = (int) count;
             return result;
         }
-        catch(Exception e){
+        catch(Exception e)
+        {
             e.getStackTrace();
         }
         return 0;
     }
 
-    public static void populateUserTix (User user) throws FileNotFoundException{
-        //String fileName = user.getUsername() + user.getPassword();
+    //reads ticket information from a users file and populates the users current tickets array list
+    public static void populateUserTix (User user) throws FileNotFoundException
+    {
         String fileName = user.getUsername();
         File file = new File("MainProject/UserFolder/" + fileName + ".txt");
         int lineNum = Menu.lineCounter(file);
         Scanner userSc = new Scanner(file);
-        //userSc.nextLine();
-        if (lineNum > 1){
+        if (lineNum > 1)
+        {
             while (userSc.hasNextLine())
             {
                 String userInfo = userSc.nextLine();
@@ -104,7 +107,8 @@ public class Menu
                 int tixMovMonth = userSc.nextInt();
                 int tixMovDay = userSc.nextInt();
                 int tixMovYear = userSc.nextInt();
-                if(userSc.hasNextLine()) {
+                if(userSc.hasNextLine())
+                {
                     userSc.nextLine();
                 }
                 String tixTime = userSc.nextLine();
@@ -113,7 +117,8 @@ public class Menu
                 int tixYear = userSc.nextInt();
                 int tixSeatNum = userSc.nextInt();
                 String isCurrent = userSc.next();
-                if (isCurrent.equals("1")) {
+                if (isCurrent.equals("1"))
+                {
                     Date movieRelDate = new Date(tixMovMonth, tixMovDay, tixMovYear);
                     Date showDate = new Date(tixMonth, tixDay, tixYear);
                     Movie newMovie = new Movie(tixTitle, tixGenre, movieRelDate);
@@ -122,22 +127,25 @@ public class Menu
                 }
             }
         }
-        else{
+        else
+        {
             System.out.println("\nYou have no tickets! Try buying a ticket through the Browse Movies option.\n-------------------------------");
         }
-
-        // userSc.close();
     }
 
-
-    private static void populateMovies(Theater theater) throws FileNotFoundException {
+    //reads from movieList.txt, and populates the theaters array list of movies, it also computes the average rating for each movie
+    //and updates the corresponding Movie's rating instance variable
+    private static void populateMovies(Theater theater) throws FileNotFoundException
+    {
         ArrayList<Movie> movieList = new ArrayList<>();
         Scanner movieListSc = new Scanner(new File("MainProject/src/movieList.txt"));
-        while (movieListSc.hasNextLine()){
+        while (movieListSc.hasNextLine())
+        {
             String rawTitle = movieListSc.nextLine();
             String strippedTitle = rawTitle.replaceAll("\\s", "");
             File filePath = new File("MainProject/MoviesFolder/" + strippedTitle);
-            if (filePath.exists()){
+            if (filePath.exists())
+            {
                 Scanner movieSc = new Scanner(filePath);
                 String title = movieSc.nextLine();
                 String genre = movieSc.nextLine();
@@ -163,13 +171,14 @@ public class Menu
         theater.setMovies(movieList);
     }
 
+    //creates a new user object with the users inputted username and password
     private static void createUserObject()
     {
-        //creating user object using key and value from ma
         currentUser = new User(currentUsername, currentPassword);
     }
 
-    public static void main(String [] args) throws IOException, FileAlreadyExistsException {
+    public static void main(String [] args) throws IOException, FileAlreadyExistsException
+    {
         Theater theTheater = new Theater("100 Main St.");
         populateMovies(theTheater);
         System.out.println("Welcome to the Movie Booking Program.");
@@ -190,6 +199,7 @@ public class Menu
                             + "\t(1) Yes, log me in. \n"
                             + "\t(2) No, I would like to make an account.");
                     int userAcctChoice = sysSc.nextInt();
+                    //user has an account, he or she will log in here, must enter exact correct credentials
                     if (userAcctChoice == 1)
                     {
                         boolean loggingIn = true;
@@ -228,6 +238,7 @@ public class Menu
                             }
                         }
                     }
+                    //user may create an account here, may not user a username that is already taken
                     else if (userAcctChoice == 2)
                     {
                         System.out.print("Enter your new username: ");
@@ -253,7 +264,6 @@ public class Menu
                             System.out.println("Account Created! Welcome " + newUsername + ".\nPlease allow the program to restart, and log in with your new info.");
                             return;
                         }
-
                     }
                     else
                     {
@@ -263,7 +273,7 @@ public class Menu
                 boolean userMenu = true;
                 while(userMenu)
                 {
-                    //creating user object
+                    //displays the menu of options available to the user
                     createUserObject();
                     System.out.print("What would you like to do today? \n"
                             + "\t (1) View my history \n"
@@ -272,31 +282,38 @@ public class Menu
                             + "\t (4) Sign out \n"
                             + "\t (5) Delete account");
                     int userAction = sysSc.nextInt();
+                    //displays the movies that the user has watched, movies that the user has tickets to, but has not seen will not appear here
                     if(userAction == 1)
                     {
                         File detectIfExist = new File("MainProject/UserHistory/" + currentUser.getUsername() + "History.txt");
-                        if (!detectIfExist.exists()){
+                        if (!detectIfExist.exists())
+                        {
                             System.out.println("\nYou have no history! Try buying a ticket.\n--------------------------------------");
                         }
-                        else{
+                        else
+                        {
                             Menu.populateHistory(currentUser);
                             if(currentUser.getPastTix().size()==0)
                             {
                                 System.out.println("\nYou have no history! Try buying a ticket.\n--------------------------------------");
                             }
-                            else{
+                            else
+                            {
                                 System.out.println("Ticket History: \n");
-                                for(Ticket t: currentUser.getPastTix()){
+                                for(Ticket t: currentUser.getPastTix())
+                                {
                                     System.out.println(t.formattedToString());
                                 }
                                 System.out.println("\n---------------------");
                                 System.out.println("Select a movie to rate, or enter -1 to skip: ");
-                                for (int i = 0; i < currentUser.getPastTix().size(); i++){
+                                for (int i = 0; i < currentUser.getPastTix().size(); i++)
+                                {
                                     System.out.println("(" + i + ") " + currentUser.getPastTix().get(i).formattedToString());
                                 }
                                 //TODO ISSUE: USER CAN RATE MOVIES ENDLESSLY. PROB CAN'T FIX.
                                 int userMoviePick = sysSc.nextInt();
-                                if (userMoviePick != -1){
+                                if (userMoviePick != -1)
+                                {
                                     for (int j = 0; j < currentUser.getPastTix().size(); j++)
                                     {
                                         if(userMoviePick == j)
@@ -313,11 +330,11 @@ public class Menu
                                         }
                                     }
                                 }
-
-
                             }
                         }
                     }
+                    //allows the user to browse through the available movies, view their ratings, search for movies based on title, genre, or minimum ratings.
+                    //It also allows the user to purchase a ticket to a movie of their liking. They may also select a movie that they wish to learn more about (genre, release date)
                     else if(userAction == 2)
                     {
                         boolean stayInMovieList = true;
@@ -329,9 +346,12 @@ public class Menu
                             {
                                 System.out.print("(" + i + ") Title: " +
                                         theTheater.getMovies().get(i).getTitle());
-                                if(Double.isNaN(theTheater.getMovies().get(i).getRating())) {
+                                if(Double.isNaN(theTheater.getMovies().get(i).getRating()))
+                                {
                                     System.out.print(" | No ratings available");
-                                } else {
+                                }
+                                else
+                                {
                                     System.out.printf(" | Rating: %.2f out of 5", theTheater.getMovies().get(i).getRating());
                                 }
                                 System.out.println();
@@ -343,13 +363,18 @@ public class Menu
                             Random rn = new Random();
                             int randomMovie = rn.nextInt(theTheater.getMovies().size());
                             String suggestGenre = theTheater.getMovies().get(randomMovie).getGenre();
-                            for (int i = 0; i < theTheater.getMovies().size(); i++) {
-                                if (theTheater.getMovies().get(i).getGenre().equals(suggestGenre)) {
+                            for (int i = 0; i < theTheater.getMovies().size(); i++)
+                            {
+                                if (theTheater.getMovies().get(i).getGenre().equals(suggestGenre))
+                                {
                                     System.out.print("Title: " +
                                             theTheater.getMovies().get(i).getTitle());
-                                    if(Double.isNaN(theTheater.getMovies().get(i).getRating())) {
+                                    if(Double.isNaN(theTheater.getMovies().get(i).getRating()))
+                                    {
                                         System.out.print(" | No ratings available");
-                                    } else {
+                                    }
+                                    else
+                                    {
                                         System.out.printf(" | Rating: %.2f out of 5", theTheater.getMovies().get(i).getRating());
                                     }
                                     System.out.println();
@@ -363,7 +388,6 @@ public class Menu
                                 if (browseAction == -1)
                                 {
                                     //SEARCH
-                                    //System.out.println("IN SEARCH :)))");
                                     int searchOption = 0;
                                     //TODO make sure to add ratings as a search option when that is finished
                                     System.out.println("What would you like to search by?" +
@@ -376,7 +400,6 @@ public class Menu
                                     {
                                         System.out.print("Enter the title you would like to search for: ");
                                         String userSearchTitle = sysSc.nextLine();
-
                                         for (int c = 0; c < theTheater.getMovies().size(); c++)
                                         {
                                             if (theTheater.getMovies().get(c).getTitle().equals(userSearchTitle))
@@ -384,13 +407,11 @@ public class Menu
                                                 System.out.println("\n" + theTheater.getMovies().get(c).toString() + "\n");
                                             }
                                         }
-
                                     }
                                     else if (searchOption == 2)
                                     {
                                         System.out.print("Enter the genre you would like to search for: ");
                                         String userSearchGenre = sysSc.nextLine();
-
                                         for (int c = 0; c < theTheater.getMovies().size(); c++)
                                         {
                                             if (theTheater.getMovies().get(c).getGenre().equals(userSearchGenre))
@@ -425,10 +446,10 @@ public class Menu
                                                 theTheater.getMovies().get(i).getTitle());
                                     }
                                     int movieChoice = sysSc.nextInt();
-                                    for (int j = 0; j < theTheater.getMovies().size(); j++) {
-                                        if (movieChoice == j) {
-                                            // display a handful of dates / times
-                                            //Random rn = new Random();
+                                    for (int j = 0; j < theTheater.getMovies().size(); j++)
+                                    {
+                                        if (movieChoice == j)
+                                        {
                                             System.out.println("Pick a date and time.");
                                             ArrayList<Date> dates = new ArrayList<>();
                                             ArrayList<String> times = new ArrayList<>();
@@ -436,7 +457,8 @@ public class Menu
                                             int day = 0;
                                             int year = 0;
                                             String showTime = "";
-                                            for (int i = 0; i < 5; i++) {
+                                            for (int i = 0; i < 5; i++)
+                                            {
                                                 month = (1 + rn.nextInt(13));
                                                 day = (1 + rn.nextInt(30));
                                                 year = 2021;
@@ -461,7 +483,8 @@ public class Menu
                                     }
                                 }
                             }
-                            else {
+                            else
+                            {
                                 for (int j = 0; j < theTheater.getMovies().size(); j++)
                                 {
                                     if (browseAction == j)
@@ -473,15 +496,17 @@ public class Menu
                             stayInMovieList = false;
                         }
                     }
+                    //allows the user to view the tickets that he or she has bought, but not yet watched. Or displays no tickets if the user has not purchased any tickets
+                    //if the user chooses to watch a movie, only then will he or she be permitted to rate the movie.
                     else if(userAction == 3)
                     {
-
                         Menu.populateUserTix(currentUser);
                         if(currentUser.getCurrentTix().size()==0)
                         {
                             System.out.println("You have no tickets");
                         }
-                        else {
+                        else
+                        {
                             System.out.println("Tickets: \n");
                             Menu.populateHistory(currentUser);
                             for(Ticket pastTix : currentUser.getPastTix())
@@ -494,17 +519,18 @@ public class Menu
                                     }
                                 }
                             }
-                            if (currentUser.getCurrentTix().size() == 0){
+                            if (currentUser.getCurrentTix().size() == 0)
+                            {
                                 System.out.println("No tickets available. Try buying a ticket.\n");
                             }
-                            else {
+                            else
+                            {
                                 for(int j = 0; j < currentUser.getCurrentTix().size(); j++)
                                 {
                                     System.out.println("(" + j + ") " + currentUser.getCurrentTix().get(j).formattedToString());
                                     System.out.println("--------------------");
                                 }
                             }
-
                             System.out.println("Enter the index number of the movie you have watched, or -1 to skip.");
                             int yesOrNo = sysSc.nextInt();
                             for (int j = 0; j < currentUser.getCurrentTix().size(); j++)
@@ -512,7 +538,6 @@ public class Menu
                                 if (yesOrNo == theTheater.getMovies().get(j).getID())
                                 {
                                     Movie daMovie = theTheater.getMovies().get(j);
-                                    //File userHistory = new File("MainProject/UserHistory/" + currentUser.getUsername() + "History.txt");
                                     FileWriter historyWriter = new FileWriter(userHistoryFile, true);
                                     historyWriter.write(currentUser.getCurrentTix().get(j).toString() + "\n");
                                     currentUser.getPastTix().add(currentUser.getCurrentTix().get(j));
@@ -523,11 +548,13 @@ public class Menu
                             }
                         }
                     }
+                    //signs the user out, terminating the program
                     else if(userAction == 4)
                     {
                         userMenu = false;
                         keepGoing = false;
                     }
+                    //deletes the users account as well as his or hers corresponding history account. May not sign in again with the same credentials unless a new account is created
                     else if(userAction == 5)
                     {
                         sysSc.close();
@@ -539,6 +566,7 @@ public class Menu
                     }
                 }
             }
+            //signs in to the user side of the program
             else if (userType == 2)
             {
                 boolean stayInAdmin = true;
@@ -549,7 +577,7 @@ public class Menu
                 File movieList = new File("MainProject/src/movieList.txt");
                 while (stayInAdmin)
                 {
-
+                    //displays the admin action menu
                     if (enteredUsername.equals(Menu.getAdminUser()) && enteredPass.equals(Menu.getAdminPass()))
                     {
                         System.out.println("Select Command you wish to perform: \n"
@@ -560,7 +588,7 @@ public class Menu
                                 + "\t(5) Sign Out");
                         int adminFunc = sysSc.nextInt();
                         sysSc.nextLine();
-                        //Implement posting new movie
+                        //allows the admin to post a new movie
                         if (adminFunc == 1)
                         {
                             System.out.println("What is the title of the movie you would like to input?");
@@ -580,9 +608,8 @@ public class Menu
                             movieWriter.write(movieTitle + "\n" + movieGenre +  "\n" + movieMonth + " " + movieDay + " " + movieYear);
                             movieWriter.close();
                             movieListWriter.close();
-
                         }
-                        //Implement editing details of movie
+                        //allows the admin to edit/overwrite the details of a movie
                         else if (adminFunc==2)
                         {
                             Scanner sc = new Scanner(System.in);
@@ -605,7 +632,9 @@ public class Menu
                             System.out.println("Details changed. Terminating program...");
                             return;
                         }
-                        else if(adminFunc == 3) {
+                        //displays summary statistics to the admin (total # of users, total # of movies shown, etc)
+                        else if(adminFunc == 3)
+                        {
                             Scanner sc = new Scanner(System.in);
                             populateMovies(theTheater);
                             int totalMovies = theTheater.getMovies().size();
@@ -644,7 +673,9 @@ public class Menu
                                 System.out.printf("Best movie of the week by rating: %s | %.2f out of 5 \n\n", bestMovie.getTitle(), bestMovie.getRating());
                             }
                         }
-                        else if (adminFunc == 4){
+                        //allows the admin to delete a movie if he or wishes
+                        else if (adminFunc == 4)
+                        {
                             Scanner sc = new Scanner(System.in);
                             System.out.print("Enter the exact name of the movie you wish to delete: ");
                             String rawTitle = sc.nextLine();
@@ -664,6 +695,7 @@ public class Menu
                                 return;
                             }
                         }
+                        //allows the admin to sign out, terminating the program
                         else if (adminFunc == 5)
                         {
                             System.out.println("Signing Out.\n");

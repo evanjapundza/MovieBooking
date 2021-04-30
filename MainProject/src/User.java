@@ -1,3 +1,11 @@
+/*
+ *  Class: C212 Introduction to Software Systems
+ *  Assignment: Project(Movie Booking Application)
+ *  Group Number: 27
+ *  Group Members: Collin Rassel, Evan Japundza, Maouloune Goumballe, and Spencer Chambers
+ *  Due Date: April 30, 2021
+ */
+
 import java.util.ArrayList;
 
 public class User extends Account{
@@ -7,7 +15,8 @@ public class User extends Account{
 	private ArrayList<Ticket> currentTix; //list of available tickets user has
 	
 	//Constructor
-	public User(String username, String password) {
+	public User(String username, String password)
+	{
 		super(username,password);
 		//initializes instance variables
 		this.pastTix = new ArrayList<>();
@@ -15,50 +24,52 @@ public class User extends Account{
 	}
 	
 	//getters and setters
-	
-	public ArrayList<Ticket> getPastTix() {
+	public ArrayList<Ticket> getPastTix()
+	{
 		return pastTix;
 	}
 
-	public void setPastTix(ArrayList<Ticket> pastTix) {
+	public void setPastTix(ArrayList<Ticket> pastTix)
+	{
 		this.pastTix = pastTix;
 	}
 
-	public ArrayList<Ticket> getCurrentTix() {
+	public ArrayList<Ticket> getCurrentTix()
+	{
 		return currentTix;
 	}
 
-	public void setCurrentTix(ArrayList<Ticket> currentTix) {
+	public void setCurrentTix(ArrayList<Ticket> currentTix)
+	{
 		this.currentTix = currentTix;
 	}
 
 	//other methods
-	public String getHistory() {
+	public String getHistory()
+	{
 		//returns all movies watched in readable String format
 		String ret = "";
-		for(Ticket t: pastTix) { //prints all movies from pastTix
+		for(Ticket t: pastTix) //prints all movies from pastTix
+		{
 			ret += t.getMovie().toString() + "\n";
 		}
 		return ret;
 	}
-	public void buyTicket(Ticket ticket) {
+
+	public void buyTicket(Ticket ticket)
+	{
 		//updates currentTix list once user buys Ticket
 		currentTix.add(ticket);
 	}
 	
-	public String viewTickets(){
+	public String viewTickets()
+	{
 		//returns currentTix in readable string format
 		String ret = "";
-		for(Ticket t: currentTix) {
+		for(Ticket t: currentTix)
+		{
 			ret += t.toString() + "\n";
 		}
 		return ret;
 	}
-	
-	// **Seems like the showAvailableMovies() method in Theater class already does this**
-//	public String browseMovies() {
-//		//returns list of available movies from Theater class in readable string format
-//		return"";
-//	}
-
 }

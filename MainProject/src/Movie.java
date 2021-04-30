@@ -1,5 +1,13 @@
+/*
+ *  Class: C212 Introduction to Software Systems
+ *  Assignment: Project(Movie Booking Application)
+ *  Group Number: 27
+ *  Group Members: Collin Rassel, Evan Japundza, Maouloune Goumballe, and Spencer Chambers
+ *  Due Date: April 30, 2021
+ */
+
 import java.util.ArrayList;
-//test
+
 public class Movie
 {
     private String title;
@@ -108,13 +116,15 @@ public class Movie
     public String toString()
     {
         String ret;
-        if (description != "") {
+        if (description != "")
+        {
             ret = "Title: " + title + " Genre: " + genre + "Re lease Date: " + releaseDate +
                     " Description: " + description;
-        } else {
+        }
+        else
+        {
             ret = "Movie: " + title + " Genre: " + genre + " Release Date: " + releaseDate;
         }
-
         return ret;
     }
 }

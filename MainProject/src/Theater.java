@@ -1,3 +1,11 @@
+/*
+ *  Class: C212 Introduction to Software Systems
+ *  Assignment: Project(Movie Booking Application)
+ *  Group Number: 27
+ *  Group Members: Collin Rassel, Evan Japundza, Maouloune Goumballe, and Spencer Chambers
+ *  Due Date: April 30, 2021
+ */
+
 import java.util.ArrayList;
 
 public class Theater
@@ -17,11 +25,13 @@ public class Theater
         return address;
     }
 
-    public void setMovies(ArrayList<Movie> newList){
+    public void setMovies(ArrayList<Movie> newList)
+    {
         this.movies = newList;
     }
 
-    public ArrayList<Movie> getMovies(){
+    public ArrayList<Movie> getMovies()
+    {
         return this.movies;
     }
 
@@ -40,7 +50,8 @@ public class Theater
     {
         //show all movies available to be played
     	System.out.println("Available Movies: ");
-    	for(Movie m:movies) { //using toString() method to display available movies
+    	for(Movie m:movies)
+    	{
     		System.out.println(m.toString() + "\n");
     	}
     }
