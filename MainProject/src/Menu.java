@@ -15,8 +15,8 @@ import java.util.*;
 
 public class Menu
 {
-    private static final String adminUser = "a";
-    private static final String adminPass = "p";
+    private static final String adminUser = "ADMIN1";
+    private static final String adminPass = "password";
     private static String currentUsername;
     private static String currentPassword;
     private static User currentUser;
