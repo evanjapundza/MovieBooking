@@ -12,7 +12,6 @@ public class Menu
     private static String currentUsername;
     private static String currentPassword;
     private static User currentUser;
-    private static Map<String, String> creds = new HashMap<>();
     private static File fileName;
     private static File userHistoryFile;
     private static File movieFileToDelete;
@@ -318,7 +317,6 @@ public class Menu
 
                             }
                         }
-
                     }
                     else if(userAction == 2)
                     {
@@ -490,20 +488,16 @@ public class Menu
                             {
                                 for(int j = 0; j < currentUser.getCurrentTix().size(); j++)
                                 {
-                                    //System.out.println(pastTix.getMovie().getTitle());
-                                    //System.out.println(currentUser.getCurrentTix().get(j).getMovie().getTitle());
                                     if(pastTix.getMovie().getTitle().equals(currentUser.getCurrentTix().get(j).getMovie().getTitle()))
                                     {
                                         currentUser.getCurrentTix().remove(j);
-                                        //System.out.println("(" + j + ") " + currentUser.getCurrentTix().get(j).formattedToString());
-                                        //System.out.println("--------------------");
                                     }
                                 }
                             }
                             if (currentUser.getCurrentTix().size() == 0){
                                 System.out.println("No tickets available. Try buying a ticket.\n");
                             }
-                            else{
+                            else {
                                 for(int j = 0; j < currentUser.getCurrentTix().size(); j++)
                                 {
                                     System.out.println("(" + j + ") " + currentUser.getCurrentTix().get(j).formattedToString());
@@ -613,11 +607,42 @@ public class Menu
                         }
                         else if(adminFunc == 3) {
                             Scanner sc = new Scanner(System.in);
+                            populateMovies(theTheater);
                             int totalMovies = theTheater.getMovies().size();
-                            int totalUsers = 0;
-                            String bestMovieOfWeek = "";
+                            File userDirectory = new File("MainProject/UserHistory");
+                            int totalUsers = userDirectory.list().length;
                             System.out.println("Movie Statistics: \n");
-
+                            System.out.println(totalUsers + " users created accounts.");
+                            System.out.println(totalMovies + " Movies shown this week.");
+                            double totalRatings = 0;
+                            int counter = 0;
+                            for(int i = 0; i < theTheater.getMovies().size(); i++)
+                            {
+                                if(!Double.isNaN(theTheater.getMovies().get(i).getRating()))
+                                {
+                                    totalRatings += theTheater.getMovies().get(i).getRating();
+                                    counter++;
+                                }
+                            }
+                            double totalAverageRatings = totalRatings / counter;
+                            System.out.printf("The average rating for all movies in the theater is %.2f out of 5\n", totalAverageRatings);
+                            System.out.println("The best performing theater is at " + theTheater.getAddress());
+                            Movie bestMovie = theTheater.getMovies().get(0);
+                            for(int i = 0; i < theTheater.getMovies().size(); i++)
+                            {
+                                if(theTheater.getMovies().get(i).getRating() > bestMovie.getRating() || Double.isNaN(bestMovie.getRating()))
+                                {
+                                    bestMovie = theTheater.getMovies().get(i);
+                                }
+                            }
+                            if(Double.isNaN(bestMovie.getRating()))
+                            {
+                                System.out.println("Error: No movies rated for this week. Unable to retrieve statistics");
+                            }
+                            else
+                            {
+                                System.out.printf("Best movie of the week by rating: %s | %.2f out of 5 \n\n", bestMovie.getTitle(), bestMovie.getRating());
+                            }
                         }
                         else if (adminFunc == 4){
                             Scanner sc = new Scanner(System.in);
@@ -632,7 +657,6 @@ public class Menu
                                 movieFileToDelete.delete();
                                 System.out.println(rawTitle + " deleted. Program terminating, changes will take effect upon reboot.");
                                 return;
-
                             }
                             else
                             {
