@@ -251,8 +251,6 @@ public class Menu
                             System.out.println();
                             for (int i = 0; i < theTheater.getMovies().size(); i++)
                             {
-
-                                //System.out.println(theTheater.getMovies().get(i).getRating());
                                 System.out.print("(" + theTheater.getMovies().get(i).getID() + ") Title: " +
                                         theTheater.getMovies().get(i).getTitle());
                                 if(Double.isNaN(theTheater.getMovies().get(i).getRating())) {
@@ -261,6 +259,25 @@ public class Menu
                                     System.out.printf(" | Rating: %.2f out of 5", theTheater.getMovies().get(i).getRating());
                                 }
                                 System.out.println();
+                            }
+                            System.out.println("-----------------------------------------------\n" +
+                                    "Suggested Movies: \n");
+
+                            Random rn = new Random();
+                            int randomMovie = rn.nextInt(theTheater.getMovies().size());
+
+                            String suggestGenre = theTheater.getMovies().get(randomMovie).getGenre();
+                            for (int i = 0; i < theTheater.getMovies().size(); i++) {
+                                if (theTheater.getMovies().get(i).getGenre().equals(suggestGenre)) {
+                                    System.out.print("Title: " +
+                                            theTheater.getMovies().get(i).getTitle());
+                                    if(Double.isNaN(theTheater.getMovies().get(i).getRating())) {
+                                        System.out.print(" | No ratings available");
+                                    } else {
+                                        System.out.printf(" | Rating: %.2f out of 5", theTheater.getMovies().get(i).getRating());
+                                    }
+                                    System.out.println();
+                                }
                             }
                             System.out.print("\n Enter the corresponding number to the movie you wish to view more of.\n\t" +
                                     "Or, enter -1 to search for a movie, -2 to buy a ticket, or -3 to quit:  ");
@@ -335,7 +352,7 @@ public class Menu
                                     for (int j = 0; j < theTheater.getMovies().size(); j++) {
                                         if (movieChoice == theTheater.getMovies().get(j).getID()) {
                                             // display a handful of dates / times
-                                            Random rn = new Random();
+                                            //Random rn = new Random();
                                             System.out.println("Pick a date and time.");
                                             ArrayList<Date> dates = new ArrayList<>();
                                             ArrayList<String> times = new ArrayList<>();
@@ -426,6 +443,7 @@ public class Menu
                         System.out.println("Select Command you wish to perform: \n"
                                 + "\t(1) Post new movie \n"
                                 + "\t(2) Edit details of existing movie \n"
+                                + "\t(3) Movie Statistics \n"
                                 + "\t(3) Delete Movie \n"
                                 + "\t(4) Sign Out");
                         int adminFunc = sysSc.nextInt();
@@ -436,7 +454,7 @@ public class Menu
                             System.out.println("What is the title of the movie you would like to input?");
                             String movieTitle = sysSc.nextLine();
                             String titleNoSpace = movieTitle.replaceAll("\\s", "");;
-                            System.out.println("What is the genre of the movie you would like to input?");
+                            System.out.println("What is the genre of the movie you would like to input? (GENRES INCLUDE: Action, Comedy, Horror, Drama, Fantasy, Mystery, Romance, Thriller, Western");
                             String movieGenre = sysSc.next();
                             System.out.println("What is the release date of the movie you would like to input? (Enter month, then day, then year)");
                             int movieMonth = sysSc.nextInt();
@@ -475,7 +493,15 @@ public class Menu
                             titleWrite.close();
                             detailWrite.close();
                         }
-                        else if (adminFunc == 3){
+                        else if(adminFunc == 3) {
+                            Scanner sc = new Scanner(System.in);
+                            int totalMovies = theTheater.getMovies().size();
+                            int totalUsers = 0;
+                            String bestMovieOfWeek = "";
+                            System.out.println("Movie Statistics: ");
+
+                        }
+                        else if (adminFunc == 4){
                             Scanner sc = new Scanner(System.in);
                             System.out.print("Enter the exact name of the movie you wish to delete: ");
                             String rawTitle = sc.nextLine();
@@ -493,7 +519,7 @@ public class Menu
                                 System.out.println("Couldnt delete");
                             }
                         }
-                        else if (adminFunc == 4)
+                        else if (adminFunc == 5)
                         {
                             System.out.println("Signing Out.\n");
                             System.out.println("______________________________________\n");
