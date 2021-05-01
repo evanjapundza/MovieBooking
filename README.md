@@ -18,3 +18,7 @@ User: Evan Password: Japundza
 To run program, run the Menu.java file.
 
 For some reason, issues are being flagged upon importing the project. However, these issues do not seem to impact the behavior of the program.
+
+ADMIN LOGIN INFO:
+Username: ADMIN1
+Password: password
